@@ -3,6 +3,7 @@ from fastapi.staticfiles import StaticFiles
 import os
 from model.db import DB
 from controller import staticPage
+from controller import getStaticInfo
 
 # 實體化 fastapi
 app = FastAPI()
@@ -18,7 +19,7 @@ myDB.initialize()
 app.state.db = myDB
 
 # Get Static Info
-app.include_router()
+app.include_router(getStaticInfo.router)
 
 # Static Pages
 app.include_router(staticPage.router)
