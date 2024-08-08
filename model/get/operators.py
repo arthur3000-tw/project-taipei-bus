@@ -1,1 +1,3 @@
-g
+
+def getOperator(myDB):
+    return
