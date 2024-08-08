@@ -5,7 +5,7 @@ class StatusEnum(str,Enum):
     ok = "ok"
     error = "error"
 
-class Response(BaseModel):
+class MyResponse(BaseModel):
     status: StatusEnum
     message: str = None
     data: Json = None
