@@ -1,4 +1,5 @@
-from pydantic import BaseModel, Json
+from pydantic import BaseModel
+from typing import List
 from enum import Enum
 
 class StatusEnum(str,Enum):
@@ -8,5 +9,5 @@ class StatusEnum(str,Enum):
 class MyResponse(BaseModel):
     status: StatusEnum
     message: str = None
-    data: Json = None
+    data: List = None
 
