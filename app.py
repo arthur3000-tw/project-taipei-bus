@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 import os
 from model.db import DB
+from controller import staticPage
 
 # 實體化 fastapi
 app = FastAPI()
@@ -14,3 +15,6 @@ myDB.initialize()
 
 # db instance 存放於 app.state 中
 app.state.db = myDB
+
+# Static Pages
+app.include_router(staticPage.router)
