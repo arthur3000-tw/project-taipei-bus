@@ -1,6 +1,6 @@
 from model.model.ResponseModel import MyResponse
 
-def getOperator(myDB):
+def getOperators(myDB):
     # DB 指令
     sql = "SELECT * FROM operators_info"
     # 執行查詢
