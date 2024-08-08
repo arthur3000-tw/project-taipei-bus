@@ -17,5 +17,8 @@ myDB.initialize()
 # db instance 存放於 app.state 中
 app.state.db = myDB
 
+# Get Static Info
+app.include_router()
+
 # Static Pages
 app.include_router(staticPage.router)
