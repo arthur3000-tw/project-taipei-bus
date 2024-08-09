@@ -7,7 +7,8 @@ def route_plates_time(myDB,route_name,start_time,end_time):
     sql = "SELECT PlateNumb, Direction, AVG(TripTime), STDDEV(TripTime), COUNT(TripTime) FROM route_time_records \
         WHERE RouteName=%s AND \
         Time(TripStartTime) BETWEEN %s AND %s \
-        GROUP BY PlateNumb, Direction"
+        GROUP BY PlateNumb, Direction \
+        ORDER BY PlateNumb"
     val = (route_name,start_time,end_time)
     # 執行查詢
     result = myDB.query(sql,val)

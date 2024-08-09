@@ -8,7 +8,8 @@ def route_plates_date_and_time(myDB,route_name,start_date,end_date,start_time,en
         WHERE RouteName=%s AND \
         TripStartTime BETWEEN %s AND %s AND \
         Time(TripStartTime) BETWEEN %s AND %s \
-        GROUP BY PlateNumb, Direction"
+        GROUP BY PlateNumb, Direction \
+        ORDER BY PlateNumb"
     val = (route_name,start_date,end_date,start_time,end_time)
     # 執行查詢
     result = myDB.query(sql,val)
