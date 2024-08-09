@@ -4,7 +4,7 @@ from model.model.ResponseModel import MyResponse
 # 資料區間：所有日期中的「時間」期間的資料
 def route_time(myDB,route_name,start_time,end_time):
     # DB 指令
-    sql = "SELECT RouteName, Direction, AVG(TripTime), STDDEV(TripTime) FROM route_time_records \
+    sql = "SELECT RouteName, Direction, AVG(TripTime), STDDEV(TripTime), COUNT(TripTime) FROM route_time_records \
         WHERE RouteName=%s AND \
         Time(TripStartTime) BETWEEN %s AND %s \
         GROUP BY RouteName, Direction"
