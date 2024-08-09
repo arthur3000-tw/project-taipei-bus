@@ -2,8 +2,8 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 import os
 from model.db import DB
-from controller import staticPage
-from controller import getStaticInfo
+from controller import staticPage, getStaticInfo
+from controller.trip import getRouteDateTime
 
 # 實體化 fastapi
 app = FastAPI()
@@ -20,6 +20,9 @@ app.state.db = myDB
 
 # Get Static Info
 app.include_router(getStaticInfo.router)
+
+# Get Route Trip Time - DateTime
+app.include_router(getRouteDateTime.router)
 
 # Static Pages
 app.include_router(staticPage.router)
