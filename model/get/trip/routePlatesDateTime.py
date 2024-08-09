@@ -2,7 +2,7 @@ from model.model.ResponseModel import MyResponse
 
 # 資料描述：「公車路線」中所有「車牌」平均每趟時間（去程、返程）
 # 資料區間：「日期時間」期間中的資料（可輸入「日期」或「日期＋時間」）
-def route_datetime(myDB,route_name,start_datetime,end_datetime):
+def route_plates_datetime(myDB,route_name,start_datetime,end_datetime):
     # DB 指令
     sql = "SELECT PlateNumb, Direction, AVG(TripTime), STDDEV(TripTime), COUNT(TripTime) FROM route_time_records \
         WHERE RouteName=%s AND \
