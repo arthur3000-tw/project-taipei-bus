@@ -6,7 +6,7 @@ from model.model.ResponseModel import MyResponse
 
 router = APIRouter()
 
-@router.get("/operators")
+@router.get("/Operators")
 async def get_operators(request: Request):
     myDB = request.app.state.db
     try:
@@ -14,7 +14,7 @@ async def get_operators(request: Request):
     except:
         return JSONResponse(status_code=400,content=MyResponse(status="error",message="無法取得所有業者資訊").model_dump())
 
-@router.get("/routes/{operatorName}")
+@router.get("/Routes/{operatorName}")
 async def get_routes_by_operator(request:Request,operatorName:str):
     myDB = request.app.state.db
     try: 
