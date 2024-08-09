@@ -6,7 +6,7 @@ from model.get.trip.routeDateTime import route_datetime
 
 router = APIRouter()
 
-@router.get("/TripDateTime/")
+@router.get("/Route/TripDateTime/")
 async def get_route_datetime(request:Request,route_name:str,start_datetime:datetime|date,end_datetime:datetime|date):
     myDB = request.app.state.db
     try:
