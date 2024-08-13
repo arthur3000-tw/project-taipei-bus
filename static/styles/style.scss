@@ -65,26 +65,37 @@ a {
 }
 
 .nav-logo {
-  font-size: 2.1rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: black;
 }
 
 .nav-title {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, 0%);
-    font-size: 2.1rem;
-    font-weight: 500;
-    color: black;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  font-size: 2.3rem;
+  font-weight: 500;
+  color: black;
 }
 
 #map {
   height: 500px;
 }
 
-.content{
-    position: relative;
+.content {
+  position: relative;
+}
+
+.content-element {
+  width: 23%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.content-element:hover {
+  background-color: aqua;
 }
 
 footer {

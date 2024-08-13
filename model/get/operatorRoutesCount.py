@@ -3,8 +3,9 @@ from model.model.ResponseModel import MyResponse
 
 def getOperatorRoutesCount(myDB):
     # DB 指令
-    sql = "SELECT OperatorName, COUNT(DISTINCT(RouteName)) FROM routes_info \
-           GROUP BY OperatorName"
+    sql = "SELECT OperatorName, COUNT(DISTINCT(RouteName)) AS Count FROM routes_info \
+           GROUP BY OperatorName \
+           ORDER BY Count DESC"
     # 執行查詢
     result = myDB.query(sql)
     # 無查詢到資料
