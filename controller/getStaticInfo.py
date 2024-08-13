@@ -6,18 +6,29 @@ from model.model.ResponseModel import MyResponse
 
 router = APIRouter()
 
+
 @router.get("/Operators")
 async def get_operators(request: Request):
     myDB = request.app.state.db
     try:
         return getOperators(myDB)
-    except:
-        return JSONResponse(status_code=400,content=MyResponse(status="error",message="無法取得所有業者資訊").model_dump())
+    except Exception:
+        return JSONResponse(status_code=400, content=MyResponse(status="error", message="無法取得所有業者資訊").model_dump())
+
 
 @router.get("/Routes/{operatorName}")
-async def get_routes_by_operator(request:Request,operatorName:str):
+async def get_routes_by_operator(request: Request, operatorName: str):
     myDB = request.app.state.db
-    try: 
-        return getRoutes(myDB,operatorName)
-    except:
-        return JSONResponse(status_code=400,content=MyResponse(status="error",message="無法取得業者所有路線資訊").model_dump())
+    try:
+        return getRoutes(myDB, operatorName)
+    except Exception:
+        return JSONResponse(status_code=400, content=MyResponse(status="error", message="無法取得業者所有路線資訊").model_dump())
+
+
+@router.get("/OperatorRoutes")
+async def get_operator_routes_count(request: Request):
+    myDB = request.app.state.db
+    try:
+        return getOperatorRoutesCount(myDB)
+    except Exception:
+        return JSONResponse(status_code=400, content=MyResponse(status="error", message="無法取得所有業者資訊").model_dump())
