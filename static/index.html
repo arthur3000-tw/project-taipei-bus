@@ -16,6 +16,7 @@
       integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
       crossorigin=""
     ></script>
+    <script src="./static/script/navbar.js"></script>
   </head>
   <body>
     <header class="header">
@@ -40,40 +41,13 @@
       </nav>
     </header>
     <div class="content">
-        <div id="map"></div>
+      <div id="map"></div>
     </div>
     <footer class="footer">
       <div class="text">COPYRIGHT © 2024 台北公車資料酷</div>
     </footer>
   </body>
   <script>
-    const hamburger = document.querySelector(".hamburger");
-    const navMenu = document.querySelector(".nav-menu");
-    const content = document.querySelector(".content")
-
-    hamburger.addEventListener("click", mobileMenu);
-
-    function mobileMenu() {
-      hamburger.classList.toggle("active");
-      navMenu.classList.toggle("active");
-      if(hamburger.classList.value === "hamburger active"){
-        content.style.zIndex="-1";
-      }
-      else{
-        content.style.zIndex="0";
-      }
-      
-    }
-    const navLink = document.querySelectorAll(".nav-link");
-
-    navLink.forEach((n) => n.addEventListener("click", closeMenu));
-
-    function closeMenu() {
-      hamburger.classList.remove("active");
-      navMenu.classList.remove("active");
-      content.style.zIndex="0";
-    }
-
     let map = L.map("map").setView([25.060327, 121.538815], 13);
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 19,
