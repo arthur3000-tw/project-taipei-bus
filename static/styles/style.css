@@ -1,0 +1,50 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+body header {
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  width: 100%;
+  top: 0vh;
+  z-index: 5;
+  background-color: white;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  box-shadow: 0 10px 6px -6px #777;
+}
+body header div.top {
+  width: 1200px;
+}
+body header div.top nav {
+  display: flex;
+  justify-content: space-between;
+}
+body header div.top nav div h2 {
+  color: #448899;
+  font-size: 30px;
+  cursor: pointer;
+}
+body header div.top nav div ul {
+  display: flex;
+  justify-content: space-between;
+}
+body header div.top nav div ul li {
+  list-style-type: none;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 10px;
+  cursor: pointer;
+}
+body header div.top nav div ul #signout-button {
+  display: none;
+}/*# sourceMappingURL=style.css.map */
