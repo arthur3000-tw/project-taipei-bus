@@ -1,7 +1,7 @@
 from model.model.ResponseModel import MyResponse
 
 
-def getOperators(myDB):
+def getOperatorRoutesCount(myDB):
     # DB 指令
     sql = "SELECT OperatorName, COUNT(DISTINCT(RouteName)) FROM routes_info \
            GROUP BY OperatorName"

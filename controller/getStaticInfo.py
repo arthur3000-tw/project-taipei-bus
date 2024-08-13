@@ -2,6 +2,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 from model.get.operators import getOperators
 from model.get.routes import getRoutes
+from model.get.operatorRoutesCount import getOperatorRoutesCount
 from model.model.ResponseModel import MyResponse
 
 router = APIRouter()
