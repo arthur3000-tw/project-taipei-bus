@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse
 from model.model.ResponseModel import MyResponse
-from model.get.calculated.lastWeek.routeTripData import route_trip_data
+from model.get.calculated.routeTripLastWeekData import route_trip_data
 
 router = APIRouter()
 
