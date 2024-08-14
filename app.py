@@ -5,6 +5,7 @@ from controller import staticPage, getStaticInfo
 from controller.trip import getRouteDateTime, getRouteTime, getRouteDateAndTime
 from controller.trip import getRoutePlatesDateTime, getRoutePlatesTime, getRoutePlatesDateAndTime
 from controller.calculated import getRouteTripLastWeekData
+from controller.calculated import getRouteTripLastMonthData
 
 # 實體化 fastapi
 app = FastAPI()
@@ -42,6 +43,9 @@ app.include_router(getRoutePlatesDateAndTime.router)
 
 # Get Last Week Route Trip Data
 app.include_router(getRouteTripLastWeekData.router)
+
+# Get Last Month Route Trip Data
+app.include_router(getRouteTripLastMonthData.router)
 
 # Static Pages
 app.include_router(staticPage.router)
