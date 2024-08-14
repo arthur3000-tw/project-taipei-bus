@@ -7,7 +7,7 @@ router = APIRouter()
 
 
 @router.get("/LastWeek/RouteTrip")
-async def get_route_trip_data(request: Request, route_name: str):
+async def get_route_trip_last_week_data(request: Request, route_name: str):
     myDB = request.app.state.db
     try:
         return route_trip_last_week_data(myDB, route_name)
