@@ -31,7 +31,7 @@ for operator in operators:
                AVG(TripTime) AS AVG, STDDEV(TripTime) AS STD, COUNT(TripTime) AS Count \
                FROM route_time_records \
                WHERE RouteName=%s AND \
-               GPSTime BETWEEN %s AND %s \
+               TripStartTime BETWEEN %s AND %s \
                GROUP BY RouteName, SubRouteName, Direction;"
         val = (route["RouteName"], start_day, end_day)
         sql_results = myDB.query(sql, val)
@@ -76,7 +76,7 @@ for operator in operators:
                AVG(TripTime) AS AVG, STDDEV(TripTime) AS STD, COUNT(TripTime) AS Count \
                FROM route_time_records \
                WHERE RouteName=%s AND \
-               GPSTime BETWEEN %s AND %s \
+               TripStartTime BETWEEN %s AND %s \
                GROUP BY RouteName, SubRouteName, Direction;"
         val = (route["RouteName"], start_day, end_day)
         sql_results = myDB.query(sql, val)
