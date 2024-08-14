@@ -15,7 +15,7 @@ myDB.initialize()
 operators = getOperators(myDB).data
 
 # 計算最近七天數據
-end_day = datetime.fromisoformat("2024-08-08")
+end_day = datetime.fromisoformat("2024-08-04")
 start_day = end_day + timedelta(days=-7)
 
 # 清空 table
@@ -27,12 +27,12 @@ for operator in operators:
     for route in result:
         # print(route["RouteName"])
         # DB 指令
-        sql = "select RouteName, SubRouteName, Direction, \
-               AVG(TripTime) as AVG, STDDEV(TripTime) as STD, COUNT(TripTime) as Count \
-               from route_time_records \
-               where RouteName=%s and \
-               GPSTime between %s and %s \
-               group by RouteName, SubRouteName, Direction;"
+        sql = "SELECT RouteName, SubRouteName, Direction, \
+               AVG(TripTime) AS AVG, STDDEV(TripTime) AS STD, COUNT(TripTime) AS Count \
+               FROM route_time_records \
+               WHERE RouteName=%s AND \
+               GPSTime BETWEEN %s AND %s \
+               GROUP BY RouteName, SubRouteName, Direction;"
         val = (route["RouteName"], start_day, end_day)
         sql_results = myDB.query(sql, val)
         # 若沒有資料
@@ -60,7 +60,7 @@ print("--- %s seconds ---" % (time.time() - start_time))
 start_time = time.time()
 
 # 計算最近三十天數據
-end_day = datetime.fromisoformat("2024-08-08")
+end_day = datetime.fromisoformat("2024-08-04")
 start_day = end_day + timedelta(days=-30)
 
 # 清空 table
@@ -72,12 +72,12 @@ for operator in operators:
     for route in result:
         # print(route["RouteName"])
         # DB 指令
-        sql = "select RouteName, SubRouteName, Direction, \
-               AVG(TripTime) as AVG, STDDEV(TripTime) as STD, COUNT(TripTime) as Count \
-               from route_time_records \
-               where RouteName=%s and \
-               GPSTime between %s and %s \
-               group by RouteName, SubRouteName, Direction;"
+        sql = "SELECT RouteName, SubRouteName, Direction, \
+               AVG(TripTime) AS AVG, STDDEV(TripTime) AS STD, COUNT(TripTime) AS Count \
+               FROM route_time_records \
+               WHERE RouteName=%s AND \
+               GPSTime BETWEEN %s AND %s \
+               GROUP BY RouteName, SubRouteName, Direction;"
         val = (route["RouteName"], start_day, end_day)
         sql_results = myDB.query(sql, val)
         # 若沒有資料
