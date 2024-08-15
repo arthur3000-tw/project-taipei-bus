@@ -6,7 +6,7 @@ from model.get.calculated.plateTripLastWeekData import plate_trip_last_week_data
 router = APIRouter()
 
 
-@router.get("/LastWeek/PlateTrip")
+@router.get("/LastWeek/PlateTrip/{route_name}")
 async def get_plate_trip_last_week_data(request: Request, route_name: str):
     myDB = request.app.state.db
     try:
