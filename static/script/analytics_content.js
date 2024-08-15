@@ -122,9 +122,8 @@ async function click_route() {
   let plate_last_week = fetch("/LastWeek/PlateTrip/" + this.id);
   let plate_last_month = fetch("/LastMonth/PlateTrip/" + this.id);
   
-  let response = await Promise.all([route_last_week,route_last_month,plate_last_week,plate_last_month])
-
-  let data = await response.json();
+  let responses = await Promise.all([route_last_week,route_last_month,plate_last_week,plate_last_month])
+  let data = await Promise.all(responses.map(response=>response.json()));
   console.log(data)
   // 生成畫面
 //   if (data.status === "ok") {

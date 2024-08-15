@@ -12,4 +12,4 @@ def plate_trip_last_week_data(myDB, route_name):
     if len(result) == 0:
         return MyResponse(status="error", message="查無資料")
     # 回傳資料
-    return MyResponse(status="ok", data=result)
+    return MyResponse(status="ok", message="Plate Last Week", data=result)

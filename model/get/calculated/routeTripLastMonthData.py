@@ -12,4 +12,4 @@ def route_trip_last_month_data(myDB, route_name):
     if len(result) == 0:
         return MyResponse(status="error", message="查無資料")
     # 回傳資料
-    return MyResponse(status="ok", data=result)
+    return MyResponse(status="ok", message="Route Last Month", data=result)
