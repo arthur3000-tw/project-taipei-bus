@@ -25,8 +25,7 @@ myDB.insert(sql)
 for operator in operators:
     result = getRoutes(myDB, operator["OperatorName"]).data
     for route in result:
-        # print(route["RouteName"])
-        # DB 指令
+        # DB 指令，取得此路線的營運數據
         sql = "SELECT RouteName, SubRouteName, Direction, \
                AVG(TripTime) AS AVG, STDDEV(TripTime) AS STD, COUNT(TripTime) AS Count \
                FROM route_time_records \
@@ -70,8 +69,7 @@ myDB.insert(sql)
 for operator in operators:
     result = getRoutes(myDB, operator["OperatorName"]).data
     for route in result:
-        # print(route["RouteName"])
-        # DB 指令
+        # DB 指令，取得此路線的營運數據
         sql = "SELECT RouteName, SubRouteName, Direction, \
                AVG(TripTime) AS AVG, STDDEV(TripTime) AS STD, COUNT(TripTime) AS Count \
                FROM route_time_records \
