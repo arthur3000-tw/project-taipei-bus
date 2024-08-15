@@ -6,10 +6,10 @@ from model.get.calculated.plateTripLastWeekData import plate_trip_last_week_data
 router = APIRouter()
 
 
-@router.get("/LastWeek/PlateTrip/{route_name}")
-async def get_plate_trip_last_week_data(request: Request, route_name: str):
+@router.get("/LastWeek/PlateTrip/{routeName}")
+async def get_plate_trip_last_week_data(request: Request, routeName: str):
     myDB = request.app.state.db
     try:
-        return plate_trip_last_week_data(myDB, route_name)
+        return plate_trip_last_week_data(myDB, routeName)
     except Exception:
         return JSONResponse(status_code=400, content=MyResponse(status="error", message="無法取得資訊").model_dump())
