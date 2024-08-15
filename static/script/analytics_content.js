@@ -117,10 +117,10 @@ async function click_route() {
   clear_content();
   // 取得路線與車牌內容
 
-  let route_last_week = fetch("/LastWeekRouteTrip/" + this.id);
-  let route_last_month = fetch("/LastMonthRouteTrip/" + this.id);
-  let plate_last_week = fetch("/LastWeekPlateTrip/" + this.id);
-  let plate_last_month = fetch("/LastMonthPlateTrip/" + this.id);
+  let route_last_week = fetch("/LastWeek/RouteTrip/" + this.id);
+  let route_last_month = fetch("/LastMonth/RouteTrip/" + this.id);
+  let plate_last_week = fetch("/LastWeek/PlateTrip/" + this.id);
+  let plate_last_month = fetch("/LastMonth/PlateTrip/" + this.id);
   
   let response = await Promise.all([route_last_week,route_last_month,plate_last_week,plate_last_month])
 
