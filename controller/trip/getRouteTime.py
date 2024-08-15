@@ -6,10 +6,11 @@ from model.get.trip.routeTime import route_time
 
 router = APIRouter()
 
-@router.get("/Route/TripTime/")
-async def get_route_time(request:Request,route_name:str,start_time:time,end_time:time):
+
+@router.get("/Route/TripTime")
+async def get_route_time(request: Request, route_name: str, start_time: time, end_time: time):
     myDB = request.app.state.db
     try:
-        return route_time(myDB,route_name,start_time,end_time)
-    except:
-        return JSONResponse(status_code=400,content=MyResponse(status="error",message="無法取得資訊").model_dump())
+        return route_time(myDB, route_name, start_time, end_time)
+    except Exception:
+        return JSONResponse(status_code=400, content=MyResponse(status="error", message="無法取得資訊").model_dump())
