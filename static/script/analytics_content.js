@@ -12,7 +12,7 @@ async function initialize() {
   }
 }
 
-// 生成業者頁面
+// 生成每個業者頁面
 function render_operators(data) {
   // 建立全部業者 div
   let operators_div = document.createElement("div");
@@ -52,7 +52,7 @@ function render_operators(data) {
   content.appendChild(operators_div);
 }
 
-// 生成路線頁面
+// 生成每個路線頁面
 function render_operator_routes(data, title) {
   // 改變標題
   let nav_title = document.querySelector(".nav-title");
@@ -91,12 +91,13 @@ function render_operator_routes(data, title) {
 }
 
 // 生成路線頁面
-function render_route(data, title) {
+function render_route_plates(data, title) {
   // 改變標題
   let nav_title = document.querySelector(".nav-title");
   nav_title.textContent = title;
 }
 
+// 點選業者
 async function click_operator() {
   clear_content();
   // 取得業者路線
@@ -104,27 +105,34 @@ async function click_operator() {
   let data = await response.json();
   // 生成畫面
   if (data.status === "ok") {
-    console.log(data.data);
     render_operator_routes(data.data, this.id);
   } else {
     console.log(data.message);
   }
 }
 
+// 點選路線
 async function click_route() {
   console.log(this.id);
   clear_content();
-  // 取得路線內容
-  // FIXME:
-  let response = await fetch("/Routes/" + this.id);
+  // 取得路線與車牌內容
+
+  let route_last_week = fetch("/LastWeekRouteTrip/" + this.id);
+  let route_last_month = fetch("/LastMonthRouteTrip/" + this.id);
+  let plate_last_week = fetch("/LastWeekPlateTrip/" + this.id);
+  let plate_last_month = fetch("/LastMonthPlateTrip/" + this.id);
+  
+  let response = await Promise.all([route_last_week,route_last_month,plate_last_week,plate_last_month])
+
   let data = await response.json();
+  console.log(data)
   // 生成畫面
-  if (data.status === "ok") {
-    console.log(data.data);
-    render_route(data.data, this.id);
-  } else {
-    console.log(data.message);
-  }
+//   if (data.status === "ok") {
+//     console.log(data.data);
+//     render_route_plates(data.data, this.id);
+//   } else {
+//     console.log(data.message);
+//   }
 }
 
 function clear_content() {
