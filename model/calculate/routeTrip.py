@@ -30,11 +30,11 @@ for operator in operators:
                       routes_info.DepartureStopName, routes_info.DestinationStopName, \
                       AVG(route_time_records.TripTime) AS AVG, \
                       STDDEV(route_time_records.TripTime) AS STD, \
-                      COUNT(route_time_records.TripTime) AS Count \
+                      COUNT(DISTINCT route_time_records.id) AS Count \
                FROM route_time_records \
                JOIN routes_info ON routes_info.SubRouteName=route_time_records.SubRouteName \
                WHERE route_time_records.RouteName=%s \
-                 AND route_time_records.GPSTime between %s and %s \
+                 AND route_time_records.TripStartTime between %s and %s \
                GROUP BY route_time_records.RouteName, route_time_records.SubRouteName, route_time_records.Direction, \
                         routes_info.DepartureStopName, routes_info.DestinationStopName"
         val = (route["RouteName"], start_day, end_day)
@@ -83,11 +83,11 @@ for operator in operators:
                       routes_info.DepartureStopName, routes_info.DestinationStopName, \
                       AVG(route_time_records.TripTime) AS AVG, \
                       STDDEV(route_time_records.TripTime) AS STD, \
-                      COUNT(route_time_records.TripTime) AS Count \
+                      COUNT(DISTINCT route_time_records.id) AS Count \
                FROM route_time_records \
                JOIN routes_info ON routes_info.SubRouteName=route_time_records.SubRouteName \
                WHERE route_time_records.RouteName=%s \
-                 AND route_time_records.GPSTime between %s and %s \
+                 AND route_time_records.TripStartTime between %s and %s \
                GROUP BY route_time_records.RouteName, route_time_records.SubRouteName, route_time_records.Direction, \
                         routes_info.DepartureStopName, routes_info.DestinationStopName"
         val = (route["RouteName"], start_day, end_day)
@@ -107,12 +107,13 @@ for operator in operators:
             std_trip_time = sql_result["STD"]
             count = sql_result["Count"]
             # DB 指令
-            sql = "INSERT INTO routes_last_7_days_trip_data \
+            sql = "INSERT INTO routes_last_30_days_trip_data \
                    (OperatorName, RouteName, SubRouteName, Direction, DepartureStopName, DestinationStopName, \
                     AVG_TripTime, STD_TripTime, DataCount) \
                    VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
             val = (operator_name, route_name, subroute_name,
                    direction, departure_stop_name, destination_stop_name,
                    avg_trip_time, std_trip_time, count)
+            insert_result = myDB.insert(sql, val)
 
 print("--- %s seconds ---" % (time.time() - start_time))
