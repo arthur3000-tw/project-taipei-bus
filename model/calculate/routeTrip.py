@@ -26,12 +26,17 @@ for operator in operators:
     result = getRoutes(myDB, operator["OperatorName"]).data
     for route in result:
         # DB 指令，取得此路線的營運數據
-        sql = "SELECT RouteName, SubRouteName, Direction, \
-               AVG(TripTime) AS AVG, STDDEV(TripTime) AS STD, COUNT(TripTime) AS Count \
+        sql = "SELECT route_time_records.RouteName, route_time_records.SubRouteName, route_time_records.Direction, \
+                      routes_info.DepartureStopName, routes_info.DestinationStopName, \
+                      AVG(route_time_records.TripTime) AS AVG, \
+                      STDDEV(route_time_records.TripTime) AS STD, \
+                      COUNT(route_time_records.TripTime) AS Count \
                FROM route_time_records \
-               WHERE RouteName=%s AND \
-               TripStartTime BETWEEN %s AND %s \
-               GROUP BY RouteName, SubRouteName, Direction;"
+               JOIN routes_info ON routes_info.SubRouteName=route_time_records.SubRouteName \
+               WHERE route_time_records.RouteName=%s \
+                 AND route_time_records.GPSTime between %s and %s \
+               GROUP BY route_time_records.RouteName, route_time_records.SubRouteName, route_time_records.Direction, \
+                        routes_info.DepartureStopName, routes_info.DestinationStopName"
         val = (route["RouteName"], start_day, end_day)
         sql_results = myDB.query(sql, val)
         # 若沒有資料
@@ -43,15 +48,19 @@ for operator in operators:
             route_name = sql_result["RouteName"]
             subroute_name = sql_result["SubRouteName"]
             direction = sql_result["Direction"]
+            departure_stop_name = sql_result["DepartureStopName"]
+            destination_stop_name = sql_result["DestinationStopName"]
             avg_trip_time = sql_result["AVG"]
             std_trip_time = sql_result["STD"]
             count = sql_result["Count"]
             # DB 指令
             sql = "INSERT INTO routes_last_7_days_trip_data \
-                (OperatorName, RouteName, SubRouteName, Direction, AVG_TripTime, STD_TripTime, DataCount) \
-                VALUES (%s,%s,%s,%s,%s,%s,%s)"
+                   (OperatorName, RouteName, SubRouteName, Direction, DepartureStopName, DestinationStopName, \
+                    AVG_TripTime, STD_TripTime, DataCount) \
+                   VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
             val = (operator_name, route_name, subroute_name,
-                   direction, avg_trip_time, std_trip_time, count)
+                   direction, departure_stop_name, destination_stop_name,
+                   avg_trip_time, std_trip_time, count)
             insert_result = myDB.insert(sql, val)
 
 print("--- %s seconds ---" % (time.time() - start_time))
@@ -70,12 +79,17 @@ for operator in operators:
     result = getRoutes(myDB, operator["OperatorName"]).data
     for route in result:
         # DB 指令，取得此路線的營運數據
-        sql = "SELECT RouteName, SubRouteName, Direction, \
-               AVG(TripTime) AS AVG, STDDEV(TripTime) AS STD, COUNT(TripTime) AS Count \
+        sql = "SELECT route_time_records.RouteName, route_time_records.SubRouteName, route_time_records.Direction, \
+                      routes_info.DepartureStopName, routes_info.DestinationStopName, \
+                      AVG(route_time_records.TripTime) AS AVG, \
+                      STDDEV(route_time_records.TripTime) AS STD, \
+                      COUNT(route_time_records.TripTime) AS Count \
                FROM route_time_records \
-               WHERE RouteName=%s AND \
-               TripStartTime BETWEEN %s AND %s \
-               GROUP BY RouteName, SubRouteName, Direction;"
+               JOIN routes_info ON routes_info.SubRouteName=route_time_records.SubRouteName \
+               WHERE route_time_records.RouteName=%s \
+                 AND route_time_records.GPSTime between %s and %s \
+               GROUP BY route_time_records.RouteName, route_time_records.SubRouteName, route_time_records.Direction, \
+                        routes_info.DepartureStopName, routes_info.DestinationStopName"
         val = (route["RouteName"], start_day, end_day)
         sql_results = myDB.query(sql, val)
         # 若沒有資料
@@ -87,15 +101,18 @@ for operator in operators:
             route_name = sql_result["RouteName"]
             subroute_name = sql_result["SubRouteName"]
             direction = sql_result["Direction"]
+            departure_stop_name = sql_result["DepartureStopName"]
+            destination_stop_name = sql_result["DestinationStopName"]
             avg_trip_time = sql_result["AVG"]
             std_trip_time = sql_result["STD"]
             count = sql_result["Count"]
             # DB 指令
-            sql = "INSERT INTO routes_last_30_days_trip_data \
-                (OperatorName, RouteName, SubRouteName, Direction, AVG_TripTime, STD_TripTime, DataCount) \
-                VALUES (%s,%s,%s,%s,%s,%s,%s)"
+            sql = "INSERT INTO routes_last_7_days_trip_data \
+                   (OperatorName, RouteName, SubRouteName, Direction, DepartureStopName, DestinationStopName, \
+                    AVG_TripTime, STD_TripTime, DataCount) \
+                   VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
             val = (operator_name, route_name, subroute_name,
-                   direction, avg_trip_time, std_trip_time, count)
-            insert_result = myDB.insert(sql, val)
+                   direction, departure_stop_name, destination_stop_name,
+                   avg_trip_time, std_trip_time, count)
 
 print("--- %s seconds ---" % (time.time() - start_time))
