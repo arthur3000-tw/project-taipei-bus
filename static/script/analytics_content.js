@@ -166,12 +166,13 @@ function render_data_div(route_last_data, plate_last_data, title) {
     let subroute_title_div = document.createElement("div");
     subroute_title_div.style.whiteSpace = "pre-wrap";
     subroute_title_div.style.fontSize = "2.5rem";
+    let direction = route.Direction == "去程" ? "往" + route.DestinationStopName : route.Direction == "返程" ? "往" + route.DepartureStopName : ""
     subroute_title_div.textContent =
       route.OperatorName +
       " ---- " +
       route.SubRouteName +
       " ---- " +
-      route.Direction +
+      direction + "(" + route.Direction + ")" +
       " ---- " +
       "平均旅程：" +
       Math.floor(route.AVG_TripTime / 3600) +
