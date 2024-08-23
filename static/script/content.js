@@ -160,12 +160,12 @@ async function click_route() {
     route_last_month,
     plate_last_week,
     plate_last_month,
-    this.id
+    //this.id
   );
 }
 
 // 點選 title 路線
-async function click_title_route(operator_name) {
+async function click_title_route(operator_name, ws) {
   clear_content();
   // 取得業者路線
   let response = await fetch("/Routes/" + operator_name);

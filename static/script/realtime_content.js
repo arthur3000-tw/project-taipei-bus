@@ -1,6 +1,8 @@
+let ws;
 function render_realtime_info(title) {
   console.log(title);
-  let ws = new WebSocket("/ws/realtime")
+  ws = new WebSocket("/ws/realtime")
+  console.log(ws)
   ws.onmessage = (e) => {
     let data = e.data
     console.log(data)
