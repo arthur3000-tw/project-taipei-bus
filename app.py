@@ -30,8 +30,8 @@ myWebSocket = ConnectionManager.ConnectionManager()
 app.state.websocket = myWebSocket
 
 # RealTimeData Cache 實體化
-busEvent = RealTimeData()
-estimateTime = RealTimeData()
+busEvent = RealTimeData.RealTimeDataCache()
+estimateTime = RealTimeData.RealTimeDataCache()
 # Cache instance 加入 app state 中
 app.state.busEvent = busEvent
 app.state.estimateTime = estimateTime
