@@ -137,6 +137,7 @@ function render_route_plates(
   content.appendChild(last_month_div);
 }
 
+// 生成數據頁面
 function render_data_div(route_last_data, plate_last_data, title) {
   // 建立近七天資訊 div
   let data_div = document.createElement("div");

@@ -2,6 +2,7 @@ initialize();
 
 let last_page_operator_name;
 
+//初始化
 async function initialize() {
   // 取得業者名稱與路線總數
   let response = await fetch("/OperatorRoutes");
@@ -98,80 +99,84 @@ function render_operator_routes(data, title) {
 
 // 點選業者
 async function click_operator() {
-    clear_content();
-    // 取得業者路線
-    let response = await fetch("/Routes/" + this.id);
-    let data = await response.json();
-    // 生成畫面
-    if (data.status === "ok") {
-      render_operator_routes(data.data, this.id);
-    } else {
-      console.log(data.message);
-    }
+  clear_content();
+  // 取得業者路線
+  let response = await fetch("/Routes/" + this.id);
+  let data = await response.json();
+  // 生成畫面
+  if (data.status === "ok") {
+    render_operator_routes(data.data, this.id);
+  } else {
+    console.log(data.message);
   }
-  
-  // 點選路線
-  async function click_route() {
-    clear_content();
-    // 取得路線與車牌內容
-    let responses = await Promise.all([
-      fetch("/LastWeek/RouteTrip/" + this.id),
-      fetch("/LastMonth/RouteTrip/" + this.id),
-      fetch("/LastWeek/PlateTrip/" + this.id),
-      fetch("/LastMonth/PlateTrip/" + this.id),
-    ]);
-    let data = await Promise.all(responses.map((response) => response.json()));
-    // 建立資料變數
-    let route_last_week;
-    let route_last_month;
-    let plate_last_week;
-    let plate_last_month;
-    // 確認狀態
-    for (eachData of data) {
-      if (eachData.status === "error") {
-        console.log(eachData.message);
-      } else {
-        switch (eachData.message) {
-          case "Route Last Week":
-            route_last_week = eachData.data;
-            break;
-          case "Route Last Month":
-            route_last_month = eachData.data;
-            break;
-          case "Plate Last Week":
-            plate_last_week = eachData.data;
-            break;
-          case "Plate Last Month":
-            plate_last_month = eachData.data;
-            break;
-        }
+}
+
+// 點選路線
+async function click_route() {
+  clear_content();
+  // 取得路線與車牌內容
+  let responses = await Promise.all([
+    fetch("/LastWeek/RouteTrip/" + this.id),
+    fetch("/LastMonth/RouteTrip/" + this.id),
+    fetch("/LastWeek/PlateTrip/" + this.id),
+    fetch("/LastMonth/PlateTrip/" + this.id),
+  ]);
+  let data = await Promise.all(responses.map((response) => response.json()));
+  // 建立資料變數
+  let route_last_week;
+  let route_last_month;
+  let plate_last_week;
+  let plate_last_month;
+  // 確認狀態
+  for (eachData of data) {
+    if (eachData.status === "error") {
+      console.log(eachData.message);
+    } else {
+      switch (eachData.message) {
+        case "Route Last Week":
+          route_last_week = eachData.data;
+          break;
+        case "Route Last Month":
+          route_last_month = eachData.data;
+          break;
+        case "Plate Last Week":
+          plate_last_week = eachData.data;
+          break;
+        case "Plate Last Month":
+          plate_last_month = eachData.data;
+          break;
       }
     }
-    // 生成頁面
-    render_route_plates(
-      route_last_week,
-      route_last_month,
-      plate_last_week,
-      plate_last_month,
-      this.id
-    );
   }
-  
-  // 點選 title 路線
-  async function click_title_route(operator_name) {
-    clear_content();
-    // 取得業者路線
-    let response = await fetch("/Routes/" + operator_name);
-    let data = await response.json();
-    // 生成畫面
-    if (data.status === "ok") {
-      render_operator_routes(data.data, operator_name);
-    } else {
-      console.log(data.message);
-    }
+  // 生成即時資訊頁面
+  render_realtime_info(
+    this.id
+  )
+  // 生成數據頁面
+  render_route_plates(
+    route_last_week,
+    route_last_month,
+    plate_last_week,
+    plate_last_month,
+    this.id
+  );
+}
+
+// 點選 title 路線
+async function click_title_route(operator_name) {
+  clear_content();
+  // 取得業者路線
+  let response = await fetch("/Routes/" + operator_name);
+  let data = await response.json();
+  // 生成畫面
+  if (data.status === "ok") {
+    render_operator_routes(data.data, operator_name);
+  } else {
+    console.log(data.message);
   }
-  
-  function clear_content() {
-    content.replaceChildren();
-  }
-  
+}
+
+// 清除 content
+function clear_content() {
+  content.replaceChildren();
+}
