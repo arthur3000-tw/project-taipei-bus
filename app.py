@@ -8,6 +8,7 @@ from controller.trip import getRouteDateTime, getRouteTime, getRouteDateAndTime
 from controller.trip import getRoutePlatesDateTime, getRoutePlatesTime, getRoutePlatesDateAndTime
 from controller.calculated import getRouteTripLastWeekData, getRouteTripLastMonthData
 from controller.calculated import getPlateTripLastWeekData, getPlateTripLastMonthData
+from controller.realtime import getRealTimeData
 
 # 實體化 fastapi
 app = FastAPI()
@@ -58,6 +59,9 @@ app.include_router(getPlateTripLastWeekData.router)
 
 # Get Last Month Plate Trip Data
 app.include_router(getPlateTripLastMonthData.router)
+
+# Get Real Time Data
+app.include_router(getRealTimeData.router)
 
 # Static Pages
 app.include_router(staticPage.router)
