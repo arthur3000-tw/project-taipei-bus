@@ -148,6 +148,8 @@ async function click_route() {
       }
     }
   }
+  // 生成 title
+  render_title(this.id)
   // 生成即時資訊頁面
   render_realtime_info(
     this.id

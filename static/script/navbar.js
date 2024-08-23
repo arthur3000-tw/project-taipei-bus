@@ -22,3 +22,16 @@ function closeMenu() {
   navMenu.classList.remove("active");
   content.style.zIndex = "0";
 }
+
+function render_title(title){
+  // 改變標題
+  let nav_title = document.querySelector(".nav-title");
+  let new_nav_title = nav_title.cloneNode(true);
+  nav_title.parentNode.replaceChild(new_nav_title, nav_title);
+  new_nav_title.textContent = title;
+  // Disable title href
+  new_nav_title.setAttribute("href", "javascript: void(0)");
+  new_nav_title.addEventListener("click", () =>
+    click_title_route(last_page_operator_name)
+  );
+}
