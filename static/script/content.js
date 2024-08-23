@@ -57,9 +57,6 @@ function render_operators(data) {
 
 // 生成每個路線頁面
 function render_operator_routes(data, title) {
-    console.log("路線資料：")
-    console.log(data)
-    console.log("------------")
   // 改變標題
   let nav_title = document.querySelector(".nav-title");
   let new_nav_title = nav_title.cloneNode(true);
@@ -75,15 +72,7 @@ function render_operator_routes(data, title) {
   routes_div.style.padding = "20px 20px";
 
   // 產生每個路線資料畫面
-  // 資料內有主路線、副路線，只需要產生主路線
-  let route_set = new Set()
   for (element of data) {
-    // 確認有無重複的主路線名稱
-    if (route_set.has(element.RouteName)){
-        continue
-    } else {
-        route_set.add(element.RouteName)
-    }
     // 建立路線 div
     let route_div = document.createElement("div");
     route_div.className = "content-element";
