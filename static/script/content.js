@@ -10,17 +10,20 @@ async function initialize() {
   // 生成畫面
   if (data.status === "ok") {
     render_operators(data.data);
-    push_search_bar_data(data.data);
+    push_search_bar_data(data.data, "OperatorName");
+  } else {
+    console.log(data.message);
+  }
+  // 取得所有路線名稱
+  response = await fetch("/Routes");
+  data = await response.json();
+  if (data.status === "ok") {
+    push_search_bar_data(data.data, "RouteName");
   } else {
     console.log(data.message);
   }
 }
 
-function push_search_bar_data(data){
-    for (element of data){
-        search_bar_data.push(element.OperatorName)
-    }
-}
 
 // 生成每個業者頁面
 function render_operators(data) {
@@ -57,7 +60,6 @@ function render_operators(data) {
 
     // 放入 operators_div 中
     operators_div.appendChild(operator_div);
-
   }
   // 放入 content 中
   content.appendChild(operators_div);
@@ -158,8 +160,6 @@ async function click_route() {
   }
   // 生成 title
   render_title(this.id);
-  // 生成即時資訊頁面
-  render_realtime_info(this.id);
   // 生成數據頁面
   render_route_plates(
     route_last_week,

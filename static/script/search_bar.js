@@ -48,3 +48,9 @@ function displayResults(suggestions) {
     resultsDiv.appendChild(resultItem);
   });
 }
+
+function push_search_bar_data(data, attribute) {
+    for (element of data) {
+      search_bar_data.push(element[attribute]);
+    }
+  }
