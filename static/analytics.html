@@ -10,6 +10,7 @@
     <script src="./static/script/analytics_content.js" defer></script>
     <script src="./static/script/realtime_content.js" defer></script>
     <script src="./static/script/content.js" defer></script>
+    <script src="./static/script/search_bar.js" defer></script>
   </head>
   <body>
     <header class="header">
@@ -35,7 +36,10 @@
       </nav>
     </header>
     <div class="content">
-
+      <div class="search-container">
+        <input type="text" id="search-input" placeholder="搜尋..." />
+        <div id="results"></div>
+      </div>
     </div>
     <footer class="footer">
       <div class="text">COPYRIGHT © 2024 台北公車資料酷</div>
