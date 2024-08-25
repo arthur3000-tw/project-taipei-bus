@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>台北公車資料酷 - 即時資訊</title>
     <link rel="stylesheet" href="./static/styles/style.css" />
+    <script src="./static/script/global_variables.js" defer></script>
+    <script src="./static/script/websocket.js" defer></script>
     <script src="./static/script/navbar.js" defer></script>
     <script src="./static/script/realtime_content.js" defer></script>
+    <script src="./static/script/search_bar.js" defer></script>
   </head>
   <body>
     <header class="header">
       <nav class="navbar">
         <a href="/" class="nav-logo">台北公車資料酷</a>
-        <a href="/analytics" class="nav-title">數據分析</a>
+        <a href="/realtime" class="nav-title">即時資訊</a>
         <ul class="nav-menu">
           <li class="nav-item">
             <a href="/analytics" class="nav-link">數據分析</a>
@@ -31,9 +34,11 @@
         </div>
       </nav>
     </header>
-    <div class="content">
-
+    <div class="search-container">
+      <input type="text" id="search-input" placeholder="搜尋..." />
+      <div id="results"></div>
     </div>
+    <div class="content"></div>
     <footer class="footer">
       <div class="text">COPYRIGHT © 2024 台北公車資料酷</div>
     </footer>

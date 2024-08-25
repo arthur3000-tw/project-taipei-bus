@@ -10,10 +10,16 @@ async function initialize() {
   // 生成畫面
   if (data.status === "ok") {
     render_operators(data.data);
-    search_bar_data = data.data
+    push_search_bar_data(data.data);
   } else {
     console.log(data.message);
   }
+}
+
+function push_search_bar_data(data){
+    for (element of data){
+        search_bar_data.push(element.OperatorName)
+    }
 }
 
 // 生成每個業者頁面
@@ -51,6 +57,7 @@ function render_operators(data) {
 
     // 放入 operators_div 中
     operators_div.appendChild(operator_div);
+
   }
   // 放入 content 中
   content.appendChild(operators_div);

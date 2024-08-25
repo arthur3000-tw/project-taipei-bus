@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>台北公車資料酷 - 數據分析</title>
     <link rel="stylesheet" href="./static/styles/style.css" />
+    <script src="./static/script/global_variables.js" defer></script>
     <script src="./static/script/websocket.js" defer></script>
     <script src="./static/script/navbar.js" defer></script>
     <script src="./static/script/analytics_content.js" defer></script>
@@ -35,12 +36,11 @@
         </div>
       </nav>
     </header>
-    <div class="content">
-      <div class="search-container">
-        <input type="text" id="search-input" placeholder="搜尋..." />
-        <div id="results"></div>
-      </div>
+    <div class="search-container">
+      <input type="text" id="search-input" placeholder="搜尋..." />
+      <div id="results"></div>
     </div>
+    <div class="content"></div>
     <footer class="footer">
       <div class="text">COPYRIGHT © 2024 台北公車資料酷</div>
     </footer>

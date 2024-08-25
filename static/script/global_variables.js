@@ -1,1 +1,1 @@
-let search_bar_data;
+let search_bar_data = [];
