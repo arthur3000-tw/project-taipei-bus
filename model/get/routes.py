@@ -1,7 +1,7 @@
 from model.model.ResponseModel import MyResponse
 
 
-def getRoutes(myDB, operatorName):
+def getRoutesByOperator(myDB, operatorName):
     # DB 指令
     sql = "SELECT RouteName FROM routes_info \
            WHERE OperatorName=%s \
