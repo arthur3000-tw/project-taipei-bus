@@ -10,6 +10,7 @@ async function initialize() {
   // 生成畫面
   if (data.status === "ok") {
     render_operators(data.data);
+    search_bar_data = data.data
   } else {
     console.log(data.message);
   }
