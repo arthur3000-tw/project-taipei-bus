@@ -1,6 +1,6 @@
 from model.db import DB
 from model.get.operators import getOperators
-from model.get.routes import getRoutes
+from model.get.routesByOperator import getRoutes
 from model.get.calculated.routeTripLastWeekData import route_trip_last_week_data
 from model.get.calculated.routeTripLastMonthData import route_trip_last_month_data
 from datetime import datetime, timedelta

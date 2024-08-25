@@ -1,6 +1,6 @@
 from model.db import DB
 from model.get.operators import getOperators
-from model.get.routes import getRoutes
+from model.get.routesByOperator import getRoutes
 from datetime import datetime, timedelta
 import time
 
