@@ -1,6 +1,3 @@
-const hamburger = document.querySelector(".hamburger");
-const navMenu = document.querySelector(".nav-menu");
-const content = document.querySelector(".content");
 
 hamburger.addEventListener("click", mobileMenu);
 

@@ -38,19 +38,23 @@ function displayResults(suggestions) {
     const noResultPara = document.createElement("p");
     noResultPara.textContent = "沒有找到匹配的結果";
     resultsDiv.appendChild(noResultPara);
+    //
+    let routes_div = document.createElement("div")
+    let content = document.querySelector("content")
+    
     return;
   }
 
-  suggestions.forEach((item) => {
-    const resultItem = document.createElement("div");
-    resultItem.className = "result-item";
-    resultItem.textContent = item;
-    resultsDiv.appendChild(resultItem);
-  });
+  //   suggestions.forEach((item) => {
+  //     const resultItem = document.createElement("div");
+  //     resultItem.className = "result-item";
+  //     resultItem.textContent = item;
+  //     resultsDiv.appendChild(resultItem);
+  //   });
 }
 
 function push_search_bar_data(data, attribute) {
-    for (element of data) {
-      search_bar_data.push(element[attribute]);
-    }
+  for (element of data) {
+    search_bar_data.push(element[attribute]);
   }
+}

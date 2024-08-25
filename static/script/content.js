@@ -1,7 +1,5 @@
 initialize();
 
-let last_page_operator_name;
-
 //初始化
 async function initialize() {
   // 取得業者名稱與路線總數
