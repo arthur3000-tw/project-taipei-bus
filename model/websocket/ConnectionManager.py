@@ -8,7 +8,7 @@ class ConnectionManager():
 
     async def connect(self, websocket: WebSocket):
         await websocket.accept()
-        await websocket.send_text("連線成功")
+        await websocket.send_json({"data": "連線成功"})
         self.active_connections.append(websocket)
 
     def disconnect(self, websocket: WebSocket):

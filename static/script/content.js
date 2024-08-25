@@ -149,24 +149,27 @@ async function click_route() {
     }
   }
   // 生成 title
-  render_title(this.id)
+  render_title(this.id);
   // 生成即時資訊頁面
-  render_realtime_info(
-    this.id
-  )
+  render_realtime_info(this.id);
   // 生成數據頁面
   render_route_plates(
     route_last_week,
     route_last_month,
     plate_last_week,
-    plate_last_month,
+    plate_last_month
     //this.id
   );
 }
 
 // 點選 title 路線
-async function click_title_route(operator_name, ws) {
+async function click_title_route(operator_name) {
+  // 清除 content
   clear_content();
+  // websocket 斷線
+  if (wsClient.isConnected === true) {
+    wsClient.disconnect();
+  }
   // 取得業者路線
   let response = await fetch("/Routes/" + operator_name);
   let data = await response.json();
