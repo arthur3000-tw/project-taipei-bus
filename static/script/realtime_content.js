@@ -15,7 +15,12 @@ async function initialize() {
   }
 }
 
-function render_realtime_info(title) {
-  console.log(title);
-  wsClient.connect();
+function render_realtime_info() {
+  if(wsClient != null){
+    wsClient.disconnect()
+  }
+  clear_content()
+  console.log(this.id)
+  wsClient = new WebSocketClient("/ws/realtime/" + this.id);
+  wsClient.connect()
 }

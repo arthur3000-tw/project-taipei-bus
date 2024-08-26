@@ -9,7 +9,7 @@ class ConnectionManager():
 
     async def connect(self, websocket: WebSocket, route_id: str):
         await websocket.accept()
-        await websocket.send_json({"data": "連線成功"})
+        await websocket.send_json({"data": "連線成功", "route_id": route_id})
         self.active_connections.append(websocket)
         self.route_ids.append(route_id)
 

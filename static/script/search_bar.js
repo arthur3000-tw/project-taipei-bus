@@ -1,8 +1,6 @@
 const searchInput = document.getElementById("search-input");
 const resultsDiv = document.getElementById("results");
 
-// search_bar_data 為搜尋資料的來源
-
 searchInput.addEventListener("input", handleInput);
 
 function handleInput() {
@@ -18,51 +16,50 @@ function handleInput() {
 }
 
 function fetchSuggestions(searchTerm) {
-  if (searchTerm.length === 1) {
-    // 對於單個字符，搜索包含該字符的所有項目
-    return search_bar_data.filter((item) => item.includes(searchTerm));
-  } else {
-    // 對於兩個或更多字符，搜索包含這些連續字符的項目
-    return search_bar_data.filter((item) => item.includes(searchTerm));
-  }
+  // search_bar_data 為搜尋資料的來源
+  return search_bar_data.filter((item) => item.includes(searchTerm));
 }
 
 function clearResults() {
   // while (resultsDiv.firstChild) {
   //   resultsDiv.removeChild(resultsDiv.firstChild);
   // }
-  clear_content()
+  clear_content();
 }
 
 function displayResults(suggestions) {
-
   let routes_div = document.createElement("div");
-  
+
   if (suggestions.length === 0) {
     // const noResultPara = document.createElement("p");
     // noResultPara.textContent = "沒有找到匹配的結果";
     // resultsDiv.appendChild(noResultPara);
-    let route_div = document.createElement("div")
-    route_div.textContent = "沒有找到匹配的結果"
-    routes_div.appendChild(route_div)
+    let route_div = document.createElement("div");
+    route_div.textContent = "沒有找到匹配的結果";
+    routes_div.appendChild(route_div);
     content.appendChild(routes_div);
     return;
   }
-
+  console.log(routes_data)
   suggestions.forEach((item) => {
     // const resultItem = document.createElement("div");
     // resultItem.className = "result-item";
     // resultItem.textContent = item;
     // resultsDiv.appendChild(resultItem);
     //
-    
 
-    //
+    // 搜尋結果產生
     let route_div = document.createElement("div");
-    
-    route_div.textContent = item + " " + routes_data[item].DepartureStopName + "-" + routes_data[item].DestinationStopName;
+    route_div.textContent =
+      item +
+      " " +
+      routes_data[item].DepartureStopName +
+      "-" +
+      routes_data[item].DestinationStopName;
+    route_div.id = routes_data[item].RouteID
+    route_div.addEventListener("click", render_realtime_info);
 
-    routes_div.appendChild(route_div)
+    routes_div.appendChild(route_div);
   });
   content.appendChild(routes_div);
 }
