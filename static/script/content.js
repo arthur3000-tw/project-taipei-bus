@@ -187,7 +187,4 @@ async function click_title_route(operator_name) {
   }
 }
 
-// 清除 content
-function clear_content() {
-  content.replaceChildren();
-}
+

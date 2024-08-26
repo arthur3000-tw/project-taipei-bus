@@ -28,29 +28,43 @@ function fetchSuggestions(searchTerm) {
 }
 
 function clearResults() {
-  while (resultsDiv.firstChild) {
-    resultsDiv.removeChild(resultsDiv.firstChild);
-  }
+  // while (resultsDiv.firstChild) {
+  //   resultsDiv.removeChild(resultsDiv.firstChild);
+  // }
+  clear_content()
 }
 
 function displayResults(suggestions) {
+
+  let routes_div = document.createElement("div");
+  
   if (suggestions.length === 0) {
-    const noResultPara = document.createElement("p");
-    noResultPara.textContent = "沒有找到匹配的結果";
-    resultsDiv.appendChild(noResultPara);
-    //
-    let routes_div = document.createElement("div")
-    let content = document.querySelector("content")
-    
+    // const noResultPara = document.createElement("p");
+    // noResultPara.textContent = "沒有找到匹配的結果";
+    // resultsDiv.appendChild(noResultPara);
+    let route_div = document.createElement("div")
+    route_div.textContent = "沒有找到匹配的結果"
+    routes_div.appendChild(route_div)
+    content.appendChild(routes_div);
     return;
   }
 
-  //   suggestions.forEach((item) => {
-  //     const resultItem = document.createElement("div");
-  //     resultItem.className = "result-item";
-  //     resultItem.textContent = item;
-  //     resultsDiv.appendChild(resultItem);
-  //   });
+  suggestions.forEach((item) => {
+    // const resultItem = document.createElement("div");
+    // resultItem.className = "result-item";
+    // resultItem.textContent = item;
+    // resultsDiv.appendChild(resultItem);
+    //
+    
+
+    //
+    let route_div = document.createElement("div");
+    
+    route_div.textContent = item + " " + routes_data[item].DepartureStopName + "-" + routes_data[item].DestinationStopName;
+
+    routes_div.appendChild(route_div)
+  });
+  content.appendChild(routes_div);
 }
 
 function push_search_bar_data(data, attribute) {
