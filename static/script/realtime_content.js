@@ -20,7 +20,6 @@ function render_realtime_info() {
     wsClient.disconnect()
   }
   clear_content()
-  console.log(this.id)
   wsClient = new WebSocketClient("/ws/realtime/" + this.id);
   wsClient.connect()
 }

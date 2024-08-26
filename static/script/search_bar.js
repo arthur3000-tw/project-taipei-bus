@@ -40,7 +40,6 @@ function displayResults(suggestions) {
     content.appendChild(routes_div);
     return;
   }
-  console.log(routes_data)
   suggestions.forEach((item) => {
     // const resultItem = document.createElement("div");
     // resultItem.className = "result-item";
@@ -56,7 +55,7 @@ function displayResults(suggestions) {
       routes_data[item].DepartureStopName +
       "-" +
       routes_data[item].DestinationStopName;
-    route_div.id = routes_data[item].RouteID
+    route_div.id = item
     route_div.addEventListener("click", render_realtime_info);
 
     routes_div.appendChild(route_div);
