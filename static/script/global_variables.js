@@ -18,3 +18,6 @@ function clear_content() {
 
 // analytics page
 let last_page_operator_name;
+
+// websocket
+let wsClient;

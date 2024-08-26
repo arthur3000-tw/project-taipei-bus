@@ -64,4 +64,3 @@ class WebSocketClient {
   }
 }
 
-const wsClient = new WebSocketClient("/ws/realtime");

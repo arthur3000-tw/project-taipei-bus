@@ -22,7 +22,6 @@ async function initialize() {
   }
 }
 
-
 // 生成每個業者頁面
 function render_operators(data) {
   // 建立全部業者 div
@@ -158,6 +157,9 @@ async function click_route() {
   }
   // 生成 title
   render_title(this.id);
+  // 連線
+  wsClient = new WebSocketClient("/ws/realtime/" + this.id);
+  wsClient.connect()
   // 生成數據頁面
   render_route_plates(
     route_last_week,
@@ -186,5 +188,3 @@ async function click_title_route(operator_name) {
     console.log(data.message);
   }
 }
-
-
