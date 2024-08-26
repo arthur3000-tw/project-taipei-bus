@@ -17,4 +17,4 @@ def getStopsByRoute(myDB, routeName, direction):
     if len(result) == 0:
         return MyResponse(status="error", message="查無資料")
     # 回傳資料
-    return MyResponse(status="ok", data=result)
+    return MyResponse(status="ok", message=direction, data=result)

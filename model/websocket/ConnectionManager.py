@@ -11,7 +11,7 @@ class ConnectionManager():
         await websocket.accept()
         await websocket.send_json({"data": "連線成功", "routeName": routeName})
         self.activeConnections.append(websocket)
-        self.route_ids.append(routeName)
+        self.routeNames.append(routeName)
 
     def disconnect(self, websocket: WebSocket):
         self.activeConnections.remove(websocket)
