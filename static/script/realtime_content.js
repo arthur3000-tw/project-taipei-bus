@@ -16,10 +16,14 @@ async function initialize() {
 }
 
 function render_realtime_info() {
+  // 清除連線
   if(wsClient != null){
     wsClient.disconnect()
   }
+  // 清除畫面
   clear_content()
+  // 建立連線
   wsClient = new WebSocketClient("/ws/realtime/" + this.id);
   wsClient.connect()
+  
 }
