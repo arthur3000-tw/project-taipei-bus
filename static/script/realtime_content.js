@@ -23,7 +23,7 @@ async function render_realtime_info() {
   // 清除畫面
   clear_content();
   // 建立連線
-  wsClient = new WebSocketClient("/ws/realtime/" + this.id);
+  wsClient = new WebSocketClient("/ws/realtime/" + routes_data[this.id]["RouteID"]);
   wsClient.connect();
   // 取得站牌
   let responses = await Promise.all([
