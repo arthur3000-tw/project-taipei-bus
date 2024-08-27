@@ -29,5 +29,6 @@ class ConnectionManager:
     async def broadcast_json(self):
         for connection in self.activeConnections:
             await connection.send_json(MyResponse(status="ok",
-                                                  data=[self.estimateTimeCache.data[int(self.routeIDs[connection])]])
-                                       .model_dump())
+                                                  message="Estimate Time",
+                                                  data=[self.estimateTimeCache.data[int(self.routeIDs[connection])]]
+                                                  ).model_dump())
