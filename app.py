@@ -1,9 +1,13 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 # import os
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from contextlib import asynccontextmanager
+from pytz import timezone
 from model.db import DB
 from model.websocket import ConnectionManager
 from model.cache import RealTimeData
+from model.realtime.getEstimateTime import getEstimateTime
 from controller import staticPage, getStaticInfo
 from controller.trip import getRouteDateTime, getRouteTime, getRouteDateAndTime
 from controller.trip import getRoutePlatesDateTime, getRoutePlatesTime, getRoutePlatesDateAndTime
@@ -11,30 +15,40 @@ from controller.calculated import getRouteTripLastWeekData, getRouteTripLastMont
 from controller.calculated import getPlateTripLastWeekData, getPlateTripLastMonthData
 from controller.realtime import getRealTimeData
 
-
-# 實體化 fastapi
-app = FastAPI()
-# 設置靜態檔案路徑
-app.mount("/static", StaticFiles(directory='static', html=True))
-
+# RealTimeData Cache 實體化
+busEventCache = RealTimeData.RealTimeDataCache()
+estimateTimeCache = RealTimeData.RealTimeDataCache()
+# Route Info Cache 實體化
+routeInfoCache = RealTimeData.RealTimeDataCache()
 # DB 實體化
 myDB = DB.DB(host="localhost", database="taipei_bus")
 # myDB = DB.DB(host=os.environ.get("DB_HOST"), database="taipei_bus")
 myDB.initialize()
+# Websocket 實體化
+myWebSocket = ConnectionManager.ConnectionManager(estimateTimeCache)
+# scheduler 實體化
+scheduler = AsyncIOScheduler(timezone=timezone("ROC"))
+
+
+# 設定啟動及結束動作
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    scheduler.start()
+    yield
+    scheduler.shutdown()
+
+# 實體化 fastapi
+app = FastAPI(lifespan=lifespan)
+# 設置靜態檔案路徑
+app.mount("/static", StaticFiles(directory='static', html=True))
+
 # db instance 存放於 app.state 中
 app.state.db = myDB
-
-# Websocket 實體化
-myWebSocket = ConnectionManager.ConnectionManager()
+# Cache instance 加入 app state 中
+app.state.busEventCache = busEventCache
+app.state.estimateTimeCache = estimateTimeCache
 # websocket instance 存放於 app state 中
 app.state.websocket = myWebSocket
-
-# RealTimeData Cache 實體化
-busEvent = RealTimeData.RealTimeDataCache()
-estimateTime = RealTimeData.RealTimeDataCache()
-# Cache instance 加入 app state 中
-app.state.busEvent = busEvent
-app.state.estimateTime = estimateTime
 
 # Get Static Info
 app.include_router(getStaticInfo.router)
@@ -74,3 +88,8 @@ app.include_router(getRealTimeData.router)
 
 # Static Pages
 app.include_router(staticPage.router)
+
+
+@scheduler.scheduled_job("interval", seconds=5)
+async def start_scheduler():
+    await getEstimateTime(myWebSocket, estimateTimeCache)

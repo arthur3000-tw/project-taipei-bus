@@ -2,16 +2,17 @@ from fastapi import WebSocket
 from typing import List
 
 
-class ConnectionManager():
-    def __init__(self):
+class ConnectionManager:
+    def __init__(self, estimateTimeCache):
         self.activeConnections: List[WebSocket] = []
-        self.routeNames: List[str] = []
+        self.routeNames: dict = {}
+        self.estimateTimeCache = estimateTimeCache
 
     async def connect(self, websocket: WebSocket, routeName: str):
         await websocket.accept()
         await websocket.send_json({"data": "連線成功", "routeName": routeName})
         self.activeConnections.append(websocket)
-        self.routeNames.append(routeName)
+        self.routeNames[WebSocket] = routeName
 
     def disconnect(self, websocket: WebSocket):
         self.activeConnections.remove(websocket)
@@ -23,6 +24,6 @@ class ConnectionManager():
         for connection in self.activeConnections:
             await connection.send_text(message)
 
-    async def broadcast_json(self, data: dict):
+    async def broadcast_json(self):
         for connection in self.activeConnections:
-            await connection.send_json(data)
+            await connection.send_json(self.estimateTimeCache.data)
