@@ -21,13 +21,12 @@ async def getEstimateTime(myWebSocket, estimateTimeCache):
 
     for result in results["BusInfo"]:
         if result["RouteID"] not in all_data:
-            all_data[result["RouteID"]] = []
+            all_data[result["RouteID"]] = {}
 
-        all_data[result["RouteID"]].append({
-            "StopID": result["StopID"],
+        all_data[result["RouteID"]].update({result["StopID"]: {
             "EstimateTime": result["EstimateTime"],
             "GoBack": result["GoBack"]
-        })
+        }})
 
     estimateTimeCache.data = all_data
     await myWebSocket.broadcast_json()
