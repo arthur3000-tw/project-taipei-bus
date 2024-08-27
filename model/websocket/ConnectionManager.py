@@ -1,5 +1,6 @@
 from fastapi import WebSocket
 from typing import List
+from model.model.ResponseModel import MyResponse
 
 
 class ConnectionManager:
@@ -26,4 +27,4 @@ class ConnectionManager:
 
     async def broadcast_json(self):
         for connection in self.activeConnections:
-            await connection.send_json(self.estimateTimeCache.data)
+            await connection.send_json(MyResponse(status="ok", data=[self.estimateTimeCache.data]).model_dump())
