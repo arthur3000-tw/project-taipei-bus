@@ -89,6 +89,7 @@ function render_realtime_stops(route, data, direction, routes_div) {
     stop_div.style.alignItems="center"
     // 預估時間
     let estimate_div = document.createElement("div")
+    estimate_div.className="estimate-time"
     estimate_div.style.width="30%"
     estimate_div.textContent="3分鐘" // 測試資料
     // 站牌名稱
@@ -128,4 +129,10 @@ function render_realtime_stops(route, data, direction, routes_div) {
   route_div.appendChild(stops_div)
   
   routes_div.appendChild(route_div);
+}
+
+function update_realtime_stops(data){
+  for (element of data){
+    console.log(element)
+  }
 }

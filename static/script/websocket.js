@@ -61,6 +61,9 @@ class WebSocketClient {
     const message = JSON.parse(data);
     console.log("Received message:", message);
     // 在這裡處理接收到的消息
+    if (message.message === "Estimate Time"){
+      update_realtime_stops(message.data)
+    }
   }
 }
 
