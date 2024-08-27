@@ -90,6 +90,6 @@ app.include_router(getRealTimeData.router)
 app.include_router(staticPage.router)
 
 
-@scheduler.scheduled_job("interval", seconds=5)
+@scheduler.scheduled_job("interval", seconds=10)
 async def start_scheduler():
     await getEstimateTime(myWebSocket, estimateTimeCache)

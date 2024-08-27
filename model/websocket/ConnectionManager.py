@@ -11,7 +11,11 @@ class ConnectionManager:
 
     async def connect(self, websocket: WebSocket, routeID: str):
         await websocket.accept()
-        await websocket.send_json({"data": "連線成功", "routeName": routeID})
+        await websocket.send_json({"data": "連線成功", "routeID": routeID})
+        await websocket.send_json(MyResponse(status="ok",
+                                             message="Estimate Time",
+                                             data=[self.estimateTimeCache.data[int(routeID)]]
+                                             ).model_dump())
         self.activeConnections.append(websocket)
         self.routeIDs[websocket] = routeID
 

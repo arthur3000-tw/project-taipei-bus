@@ -4,6 +4,11 @@ const resultsDiv = document.getElementById("results");
 searchInput.addEventListener("input", handleInput);
 
 function handleInput() {
+  // 清除連線
+  if (wsClient != null) {
+    wsClient.disconnect();
+  }
+  
   const searchTerm = searchInput.value.trim();
   clearResults();
 
