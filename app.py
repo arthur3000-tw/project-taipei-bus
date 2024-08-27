@@ -19,7 +19,7 @@ from controller.realtime import getRealTimeData
 busEventCache = Data.DataCache()
 estimateTimeCache = Data.DataCache()
 # Route Info Cache 實體化
-routeInfoCache = Data.DataCache()
+routesInfoCache = Data.DataCache()
 # DB 實體化
 myDB = DB.DB(host="localhost", database="taipei_bus")
 # myDB = DB.DB(host=os.environ.get("DB_HOST"), database="taipei_bus")
