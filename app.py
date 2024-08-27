@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 from pytz import timezone
 from model.db import DB
 from model.websocket import ConnectionManager
-from model.cache import RealTimeData
+from model.cache import Data
 from model.realtime.getEstimateTime import getEstimateTime
 from controller import staticPage, getStaticInfo
 from controller.trip import getRouteDateTime, getRouteTime, getRouteDateAndTime
@@ -16,10 +16,10 @@ from controller.calculated import getPlateTripLastWeekData, getPlateTripLastMont
 from controller.realtime import getRealTimeData
 
 # RealTimeData Cache 實體化
-busEventCache = RealTimeData.RealTimeDataCache()
-estimateTimeCache = RealTimeData.RealTimeDataCache()
+busEventCache = Data.DataCache()
+estimateTimeCache = Data.DataCache()
 # Route Info Cache 實體化
-routeInfoCache = RealTimeData.RealTimeDataCache()
+routeInfoCache = Data.DataCache()
 # DB 實體化
 myDB = DB.DB(host="localhost", database="taipei_bus")
 # myDB = DB.DB(host=os.environ.get("DB_HOST"), database="taipei_bus")
