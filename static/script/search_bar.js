@@ -8,7 +8,7 @@ function handleInput() {
   if (wsClient != null) {
     wsClient.disconnect();
   }
-  
+
   const searchTerm = searchInput.value.trim();
   clearResults();
 
@@ -39,10 +39,12 @@ function displayResults(suggestions) {
     // const noResultPara = document.createElement("p");
     // noResultPara.textContent = "沒有找到匹配的結果";
     // resultsDiv.appendChild(noResultPara);
-    let route_div = document.createElement("div");
-    route_div.textContent = "沒有找到匹配的結果";
-    routes_div.appendChild(route_div);
-    content.appendChild(routes_div);
+    // let route_div = document.createElement("div");
+    // route_div.textContent = "沒有找到匹配的結果";
+    // route_div.style.fontSize = "30px"
+    // route_div.style.margin = "20px"
+    // routes_div.appendChild(route_div);
+    // content.appendChild(routes_div);
     return;
   }
   suggestions.forEach((item) => {
@@ -54,11 +56,15 @@ function displayResults(suggestions) {
 
     // 搜尋結果產生
     let route_div = document.createElement("div");
+    route_div.className = "result-item"
+    route_div.style.fontSize = "30px"
+    route_div.style.cursor = "pointer"
+    route_div.style.whiteSpace = "pre"
     route_div.textContent =
       item +
-      " " +
+      "    " +
       routes_data[item].DepartureStopName +
-      "-" +
+      " - " +
       routes_data[item].DestinationStopName;
     route_div.id = item
     route_div.addEventListener("click", render_realtime_info);

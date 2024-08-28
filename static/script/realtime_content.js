@@ -66,6 +66,9 @@ function render_realtime_stops(route, data, direction, routes_div) {
   // title
   let title_div = document.createElement("div");
   title_div.style.textAlign = "center";
+  title_div.style.fontSize = "36px";
+  title_div.style.margin = "0px 20px"
+  title_div.style.border = "3px solid black"
   title_div.textContent =
     route +
     "  " +
@@ -90,20 +93,25 @@ function render_realtime_stops(route, data, direction, routes_div) {
     stop_div.style.flexWrap = "wrap";
     stop_div.style.justifyContent = "center";
     stop_div.style.alignItems = "center";
+    // stop_div.style.border = "solid 1px grey";
+    stop_div.style.margin = "15px 5px";
     // 預估時間
     let estimate_div = document.createElement("div");
     estimate_div.className = "estimate-time-" + stop_div.id;
-    estimate_div.style.width = "30%";
+    estimate_div.style.width = "15%";
+    estimate_div.style.fontSize = "30px";
     estimate_div.textContent = "讀取中..."; // 測試資料
     // 站牌名稱
     let stop_name_div = document.createElement("div");
     stop_name_div.style.width = "30%";
+    stop_name_div.style.fontSize = "30px";
     stop_name_div.textContent = element.StopName;
     stop_name_div.style.textAlign = "center";
+    stop_name_div.style.margin = "0px 30px"
     // 公車車牌
     let bus_plates_div = document.createElement("div");
     bus_plates_div.className = "bus-plates-" + stop_div.id;
-    bus_plates_div.classList.add("bus-plates")
+    bus_plates_div.classList.add("bus-plates");
     bus_plates_div.style.width = "30%";
 
     // let bus_plate_div = document.createElement("div");
@@ -141,6 +149,10 @@ function update_realtime_stops(data) {
     update_estimate_div = document.querySelector(
       ".estimate-time-" + element.StopID
     );
+    update_estimate_div.style.textAlign = "center";
+    update_estimate_div.style.color = "black";
+    update_estimate_div.style.backgroundColor = "lightgrey";
+    update_estimate_div.style.borderRadius = "25px"
     let status;
     switch (element.EstimateTime) {
       case "-1":
@@ -160,10 +172,16 @@ function update_realtime_stops(data) {
     }
     if (status >= 0) {
       status = Math.floor(status / 60);
-      if (status > 0) {
+      if (status > 0 && status < 3) {
+        status = status.toString() + "分";
+        update_estimate_div.style.color = "red";
+        update_estimate_div.style.backgroundColor = "pink";
+      } else if (status > 3) {
         status = status.toString() + "分";
       } else {
         status = "即將進站";
+        update_estimate_div.style.color = "white";
+        update_estimate_div.style.backgroundColor = "red";
       }
     }
     try {
@@ -177,20 +195,27 @@ function update_realtime_stops(data) {
 }
 
 function update_realtime_bus(data) {
-  document.querySelectorAll(".bus-plate").forEach(e=>e.remove())
+  document.querySelectorAll(".bus-plate").forEach((e) => e.remove());
   for (element of data) {
-    let update_bus_plates_div = document.querySelector(".bus-plates-" + element.StopID);
+    // 排除非營運狀態公車
+    if (element.DutyStatus !== "1" || element.BusStatus !== "0"){
+      continue
+    }
+    let update_bus_plates_div = document.querySelector(
+      ".bus-plates-" + element.StopID
+    );
     let bus_plate_div = document.querySelector(".bus-plate-" + element.BusID);
     if (bus_plate_div === null) {
       bus_plate_div = document.createElement("div");
       bus_plate_div.className = "bus-plate-" + element.BusID;
-      bus_plate_div.classList.add("bus-plate")
+      bus_plate_div.classList.add("bus-plate");
       bus_plate_div.style.display = "flex";
       bus_plate_div.style.flexWrap = "wrap";
       bus_plate_div.style.justifyContent = "center";
       bus_plate_div.style.alignItems = "center";
     }
     let plate_numb = document.createElement("div");
+    plate_numb.style.fontSize = "30px";
     plate_numb.textContent = element.BusID;
     bus_plate_div.appendChild(plate_numb);
     update_bus_plates_div.appendChild(bus_plate_div);

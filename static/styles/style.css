@@ -116,7 +116,11 @@ footer div.text {
 
 .search-container {
   position: relative;
-  width: 300px;
+}
+
+#search-input {
+  font-size: 30px;
+  margin: 20px;
 }
 
 #results {
@@ -127,16 +131,18 @@ footer div.text {
 }
 
 .result-item {
+  margin: 20px;
   padding: 5px;
+  background-color: #b7b7b7;
   cursor: pointer;
 }
 
 .result-item:hover {
-  background-color: #f0f0f0;
+  background-color: lightblue;
 }
 
-.result-item.active {
-  background-color: #e9e9e9;
+.result-item:active {
+  background-color: lightcoral;
 }
 
 @media only screen and (max-width: 768px) {
