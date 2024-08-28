@@ -30,4 +30,4 @@ async def getEstimateTime(myWebSocket, estimateTimeCache):
         })
 
     estimateTimeCache.data = all_data
-    await myWebSocket.broadcast_json()
+    await myWebSocket.broadcast_json("Estimate Time")

@@ -11,17 +11,18 @@ async def async_get_request(address):
     return decompressed_content
 
 
-async def getBusEvent(myWebSocket, busEventCache):
+async def getBusEvent(subrouteIDCache, myWebSocket, busEventCache):
     response = await async_get_request(
         "https://tcgbusfs.blob.core.windows.net/blobbus/GetBusEvent.gz")
 
     results = json.loads(response)
 
     all_data = {}
+    subrouteIDTable = subrouteIDCache.data
 
     for result in results["BusInfo"]:
         try:
-            routeID = subroutID_table[result["RouteID"]]
+            routeID = subrouteIDTable[result["RouteID"]]
 
             if routeID not in all_data:
                 all_data[routeID] = []
@@ -40,4 +41,4 @@ async def getBusEvent(myWebSocket, busEventCache):
             continue
 
     busEventCache.data = all_data
-    await myWebSocket.broadcast_json()
+    await myWebSocket.broadcast_json("Bus Event")

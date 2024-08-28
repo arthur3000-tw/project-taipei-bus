@@ -3,11 +3,13 @@ from fastapi.staticfiles import StaticFiles
 # import os
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from contextlib import asynccontextmanager
+from datetime import datetime
 from pytz import timezone
 from model.db import DB
 from model.websocket import ConnectionManager
 from model.cache import Data
 from model.realtime.getEstimateTime import getEstimateTime
+from model.realtime.getBusEvent import getBusEvent
 from model.get.subrouteIDs import getSubroutesIDs
 from model.table.getSubrouteID import getSubrouteIDTable
 from controller import staticPage, getStaticInfo
@@ -28,7 +30,8 @@ myDB = DB.DB(host="localhost", database="taipei_bus")
 # myDB = DB.DB(host=os.environ.get("DB_HOST"), database="taipei_bus")
 myDB.initialize()
 # Websocket 實體化
-myWebSocket = ConnectionManager.ConnectionManager(estimateTimeCache)
+myWebSocket = ConnectionManager.ConnectionManager(
+    estimateTimeCache, busEventCache)
 # scheduler 實體化
 scheduler = AsyncIOScheduler(timezone=timezone("ROC"))
 
@@ -98,6 +101,7 @@ app.include_router(getRealTimeData.router)
 app.include_router(staticPage.router)
 
 
-@scheduler.scheduled_job("interval", seconds=10)
+@scheduler.scheduled_job("interval", seconds=10, next_run_time=datetime.now())
 async def start_scheduler():
     await getEstimateTime(myWebSocket, estimateTimeCache)
+    await getBusEvent(subrouteIDCache, myWebSocket, busEventCache)
