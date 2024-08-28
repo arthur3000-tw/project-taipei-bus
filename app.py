@@ -9,6 +9,7 @@ from model.websocket import ConnectionManager
 from model.cache import Data
 from model.realtime.getEstimateTime import getEstimateTime
 from model.get.subrouteIDs import getSubroutesIDs
+from model.table.getSubrouteID import getSubrouteIDTable
 from controller import staticPage, getStaticInfo
 from controller.trip import getRouteDateTime, getRouteTime, getRouteDateAndTime
 from controller.trip import getRoutePlatesDateTime, getRoutePlatesTime, getRoutePlatesDateAndTime
@@ -36,7 +37,11 @@ scheduler = AsyncIOScheduler(timezone=timezone("ROC"))
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     scheduler.start()
-    subrouteIDCache.setData(getSubroutesIDs(myDB).model_dump())
+    subrouteIDCache.setData(
+        getSubrouteIDTable(
+            getSubroutesIDs(myDB).model_dump()["data"]
+        )
+    )
     yield
     scheduler.shutdown()
 
