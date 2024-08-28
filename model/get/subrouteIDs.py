@@ -1,7 +1,7 @@
 from model.model.ResponseModel import MyResponse
 
 
-def getSubroutesID(myDB):
+def getSubroutesIDs(myDB):
     # DB 指令
     sql = "SELECT RouteID, SubRouteID FROM routes_info"
     # 執行查詢
