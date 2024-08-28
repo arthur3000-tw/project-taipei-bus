@@ -8,6 +8,7 @@ from model.db import DB
 from model.websocket import ConnectionManager
 from model.cache import Data
 from model.realtime.getEstimateTime import getEstimateTime
+from model.get.subrouteIDs import getSubroutesIDs
 from controller import staticPage, getStaticInfo
 from controller.trip import getRouteDateTime, getRouteTime, getRouteDateAndTime
 from controller.trip import getRoutePlatesDateTime, getRoutePlatesTime, getRoutePlatesDateAndTime
@@ -15,11 +16,12 @@ from controller.calculated import getRouteTripLastWeekData, getRouteTripLastMont
 from controller.calculated import getPlateTripLastWeekData, getPlateTripLastMonthData
 from controller.realtime import getRealTimeData
 
+
 # RealTimeData Cache 實體化
 busEventCache = Data.DataCache()
 estimateTimeCache = Data.DataCache()
-# Route Info Cache 實體化
-routesInfoCache = Data.DataCache()
+# SubRoute ID Cache 實體化
+subrouteIDCache = Data.DataCache()
 # DB 實體化
 myDB = DB.DB(host="localhost", database="taipei_bus")
 # myDB = DB.DB(host=os.environ.get("DB_HOST"), database="taipei_bus")
@@ -34,6 +36,7 @@ scheduler = AsyncIOScheduler(timezone=timezone("ROC"))
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     scheduler.start()
+    subrouteIDCache.setData(getSubroutesIDs(myDB).model_dump())
     yield
     scheduler.shutdown()
 
