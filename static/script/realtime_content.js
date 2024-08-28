@@ -102,22 +102,26 @@ function render_realtime_stops(route, data, direction, routes_div) {
     stop_name_div.style.textAlign = "center";
     // 公車車牌
     let bus_plates_div = document.createElement("div");
+    bus_plates_div.className = "bus-plates-" + stop_div.id;
+    bus_plates_div.classList.add("bus-plates")
     bus_plates_div.style.width = "30%";
-    let bus_plate_div = document.createElement("div");
-    bus_plate_div.style.display = "flex";
-    bus_plate_div.style.flexWrap = "wrap";
-    bus_plate_div.style.justifyContent = "center";
-    bus_plate_div.style.alignItems = "center";
 
-    let plate_numb = document.createElement("div");
-    plate_numb.textContent = "";
-    let plate_data = document.createElement("div");
-    plate_data.textContent = "";
+    // let bus_plate_div = document.createElement("div");
+    // bus_plate_div.className = "bus-plate-" + stop_div.id;
+    // bus_plate_div.style.display = "flex";
+    // bus_plate_div.style.flexWrap = "wrap";
+    // bus_plate_div.style.justifyContent = "center";
+    // bus_plate_div.style.alignItems = "center";
 
-    bus_plate_div.appendChild(plate_numb);
-    bus_plate_div.appendChild(plate_data);
+    // let plate_numb = document.createElement("div");
+    // plate_numb.textContent = "";
+    // let plate_data = document.createElement("div");
+    // plate_data.textContent = "";
 
-    bus_plates_div.appendChild(bus_plate_div);
+    // bus_plate_div.appendChild(plate_numb);
+    // bus_plate_div.appendChild(plate_data);
+
+    // bus_plates_div.appendChild(bus_plate_div);
 
     stop_div.appendChild(estimate_div);
     stop_div.appendChild(stop_name_div);
@@ -169,5 +173,26 @@ function update_realtime_stops(data) {
       console.log(e);
       console.log(element);
     }
+  }
+}
+
+function update_realtime_bus(data) {
+  document.querySelectorAll(".bus-plate").forEach(e=>e.remove())
+  for (element of data) {
+    let update_bus_plates_div = document.querySelector(".bus-plates-" + element.StopID);
+    let bus_plate_div = document.querySelector(".bus-plate-" + element.BusID);
+    if (bus_plate_div === null) {
+      bus_plate_div = document.createElement("div");
+      bus_plate_div.className = "bus-plate-" + element.BusID;
+      bus_plate_div.classList.add("bus-plate")
+      bus_plate_div.style.display = "flex";
+      bus_plate_div.style.flexWrap = "wrap";
+      bus_plate_div.style.justifyContent = "center";
+      bus_plate_div.style.alignItems = "center";
+    }
+    let plate_numb = document.createElement("div");
+    plate_numb.textContent = element.BusID;
+    bus_plate_div.appendChild(plate_numb);
+    update_bus_plates_div.appendChild(bus_plate_div);
   }
 }
