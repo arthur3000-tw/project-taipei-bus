@@ -8,7 +8,7 @@ async function initialize() {
   // 生成畫面
   if (data.status === "ok") {
     render_operators(data.data);
-    push_search_bar_data(data.data, "OperatorName");
+    // push_search_bar_data(data.data, "OperatorName");
   } else {
     console.log(data.message);
   }
@@ -16,7 +16,7 @@ async function initialize() {
   response = await fetch("/Routes");
   data = await response.json();
   if (data.status === "ok") {
-    push_search_bar_data(data.data, "RouteName");
+    // push_search_bar_data(data.data, "RouteName");
   } else {
     console.log(data.message);
   }
@@ -158,8 +158,8 @@ async function click_route() {
   // 生成 title
   render_title(this.id);
   // 連線
-  wsClient = new WebSocketClient("/ws/realtime/" + this.id);
-  wsClient.connect()
+  // wsClient = new WebSocketClient("/ws/realtime/" + this.id);
+  // wsClient.connect()
   // 生成數據頁面
   render_route_plates(
     route_last_week,
@@ -175,9 +175,9 @@ async function click_title_route(operator_name) {
   // 清除 content
   clear_content();
   // websocket 斷線
-  if (wsClient.isConnected === true) {
-    wsClient.disconnect();
-  }
+  // if (wsClient.isConnected === true) {
+  //   wsClient.disconnect();
+  // }
   // 取得業者路線
   let response = await fetch("/Routes/" + operator_name);
   let data = await response.json();

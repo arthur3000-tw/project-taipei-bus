@@ -115,12 +115,12 @@ function render_route_plates(
   //   click_title_route(last_page_operator_name)
   // );
 
-  console.log(
-    route_last_week,
-    route_last_month,
-    plate_last_week,
-    plate_last_month
-  );
+  // console.log(
+  //   route_last_week,
+  //   route_last_month,
+  //   plate_last_week,
+  //   plate_last_month
+  // );
 
   let last_week_div = render_data_div(
     route_last_week,

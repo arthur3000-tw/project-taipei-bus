@@ -18,11 +18,14 @@ class ConnectionManager:
                                              data=[
                                                  self.estimateTimeCache.data[int(routeID)]]
                                              ).model_dump())
-        await websocket.send_json(MyResponse(status="ok",
-                                             message="Bus Event",
-                                             data=[
-                                                 self.busEventCache.data[routeID]]
-                                             ).model_dump())
+        try:
+            await websocket.send_json(MyResponse(status="ok",
+                                                 message="Bus Event",
+                                                 data=[
+                                                     self.busEventCache.data[routeID]]
+                                                 ).model_dump())
+        except KeyError:
+            pass
         self.activeConnections.append(websocket)
         self.routeIDs[websocket] = routeID
 
@@ -45,10 +48,13 @@ class ConnectionManager:
                                                       data=[self.estimateTimeCache.data[int(
                                                           self.routeIDs[connection])]]
                                                       ).model_dump())
-        if dataName == "Bus Event":
-            for connection in self.activeConnections:
-                await connection.send_json(MyResponse(status="ok",
-                                                      message="Bus Event",
-                                                      data=[self.busEventCache.data[
-                                                          self.routeIDs[connection]]]
-                                                      ).model_dump())
+        try:
+            if dataName == "Bus Event":
+                for connection in self.activeConnections:
+                    await connection.send_json(MyResponse(status="ok",
+                                                          message="Bus Event",
+                                                          data=[self.busEventCache.data[
+                                                              self.routeIDs[connection]]]
+                                                          ).model_dump())
+        except KeyError:
+            pass

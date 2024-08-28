@@ -67,8 +67,8 @@ function render_realtime_stops(route, data, direction, routes_div) {
   let title_div = document.createElement("div");
   title_div.style.textAlign = "center";
   title_div.style.fontSize = "36px";
-  title_div.style.margin = "0px 20px"
-  title_div.style.border = "3px solid black"
+  title_div.style.margin = "0px 20px";
+  title_div.style.border = "3px solid black";
   title_div.textContent =
     route +
     "  " +
@@ -107,7 +107,7 @@ function render_realtime_stops(route, data, direction, routes_div) {
     stop_name_div.style.fontSize = "30px";
     stop_name_div.textContent = element.StopName;
     stop_name_div.style.textAlign = "center";
-    stop_name_div.style.margin = "0px 30px"
+    stop_name_div.style.margin = "0px 30px";
     // 公車車牌
     let bus_plates_div = document.createElement("div");
     bus_plates_div.className = "bus-plates-" + stop_div.id;
@@ -149,10 +149,13 @@ function update_realtime_stops(data) {
     update_estimate_div = document.querySelector(
       ".estimate-time-" + element.StopID
     );
+    if (update_estimate_div === null) {
+      continue;
+    }
     update_estimate_div.style.textAlign = "center";
     update_estimate_div.style.color = "black";
     update_estimate_div.style.backgroundColor = "lightgrey";
-    update_estimate_div.style.borderRadius = "25px"
+    update_estimate_div.style.borderRadius = "25px";
     let status;
     switch (element.EstimateTime) {
       case "-1":
@@ -198,8 +201,8 @@ function update_realtime_bus(data) {
   document.querySelectorAll(".bus-plate").forEach((e) => e.remove());
   for (element of data) {
     // 排除非營運狀態公車
-    if (element.DutyStatus !== "1" || element.BusStatus !== "0"){
-      continue
+    if (element.DutyStatus !== "1" || element.BusStatus !== "0") {
+      continue;
     }
     let update_bus_plates_div = document.querySelector(
       ".bus-plates-" + element.StopID
