@@ -52,4 +52,3 @@ class ConnectionManager:
                                                       data=[self.busEventCache.data[
                                                           self.routeIDs[connection]]]
                                                       ).model_dump())
-        
