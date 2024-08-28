@@ -38,6 +38,6 @@ async def getBusEvent(myWebSocket, busEventCache):
             })
         except KeyError:
             continue
-    
+
     busEventCache.data = all_data
     await myWebSocket.broadcast_json()
