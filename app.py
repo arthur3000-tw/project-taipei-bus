@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-import os
+# import os
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from contextlib import asynccontextmanager
 from datetime import datetime
@@ -26,8 +26,8 @@ estimateTimeCache = Data.DataCache()
 # SubRoute ID Cache 實體化
 subrouteIDCache = Data.DataCache()
 # DB 實體化
-# myDB = DB.DB(host="localhost", database="taipei_bus")
-myDB = DB.DB(host=os.environ.get("DB_HOST"), database="taipei_bus")
+myDB = DB.DB(host="localhost", database="taipei_bus")
+# myDB = DB.DB(host=os.environ.get("DB_HOST"), database="taipei_bus")
 myDB.initialize()
 # Websocket 實體化
 myWebSocket = ConnectionManager.ConnectionManager(

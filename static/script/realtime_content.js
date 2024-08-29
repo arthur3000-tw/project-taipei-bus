@@ -217,9 +217,20 @@ function update_realtime_bus(data) {
       bus_plate_div.style.justifyContent = "center";
       bus_plate_div.style.alignItems = "center";
     }
+    let bus_type = document.createElement("span")
+    bus_type.className = "material-symbols-outlined"
+    bus_type.style.fontSize = "30px"
+    if(element.CarType === "1"){
+      bus_type.textContent = "accessible"
+    } else if (element.CarType === "0"){
+      bus_type.textContent = "directions_bus"
+    } else if (element.CarType === "3"){
+      bus_type.textContent = "pets"
+    }
     let plate_numb = document.createElement("div");
     plate_numb.style.fontSize = "30px";
     plate_numb.textContent = element.BusID;
+    bus_plate_div.appendChild(bus_type)
     bus_plate_div.appendChild(plate_numb);
     update_bus_plates_div.appendChild(bus_plate_div);
   }
