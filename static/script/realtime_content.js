@@ -47,6 +47,7 @@ async function render_realtime_info() {
       }
     }
   }
+
   // 產生此路線的站牌
   console.log(route_go);
   console.log(route_back);
@@ -54,6 +55,33 @@ async function render_realtime_info() {
   render_realtime_stops(this.id, route_go, "去程", routes_div);
   render_realtime_stops(this.id, route_back, "返程", routes_div);
   content.appendChild(routes_div);
+
+  // 取得公車計算數據
+  responses = await Promise.all([
+    fetch("/LastWeek/PlateTrip/" + this.id),
+    fetch("/LastMonth/PlateTrip/" + this.id),
+  ]);
+  data = await Promise.all(responses.map((response) => response.json()));
+  // 確認狀態
+  for (eachData of data) {
+    if (eachData.status === "error") {
+      console.log(eachData.message);
+    } else {
+      switch (eachData.message) {
+        case "Plate Last Week":
+          plate_trip_last_week = eachData.data;
+          break;
+        case "Plate Last Month":
+          plate_trip_last_month = eachData.data;
+          break;
+      }
+    }
+  }
+
+  // 將數據格式轉換
+  plate_trip_last_week = data_to_hash(plate_trip_last_week, "PlateNumb");
+  plate_trip_last_month = data_to_hash(plate_trip_last_month, "PlateNumb");
+
   // 建立連線
   wsClient = new WebSocketClient(
     "/ws/realtime/" + routes_data[this.id]["RouteID"]
@@ -204,9 +232,11 @@ function update_realtime_bus(data) {
     if (element.DutyStatus !== "1" || element.BusStatus !== "0") {
       continue;
     }
+    // 
     let update_bus_plates_div = document.querySelector(
       ".bus-plates-" + element.StopID
     );
+    // 
     let bus_plate_div = document.querySelector(".bus-plate-" + element.BusID);
     if (bus_plate_div === null) {
       bus_plate_div = document.createElement("div");
@@ -217,21 +247,57 @@ function update_realtime_bus(data) {
       bus_plate_div.style.justifyContent = "center";
       bus_plate_div.style.alignItems = "center";
     }
-    let bus_type = document.createElement("span")
-    bus_type.className = "material-symbols-outlined"
-    bus_type.style.fontSize = "30px"
-    if(element.CarType === "1"){
-      bus_type.textContent = "accessible"
-    } else if (element.CarType === "0"){
-      bus_type.textContent = "directions_bus"
-    } else if (element.CarType === "3"){
-      bus_type.textContent = "pets"
+    // 顯示車種
+    let bus_type = document.createElement("span");
+    bus_type.className = "material-symbols-outlined";
+    bus_type.style.fontSize = "30px";
+    if (element.CarType === "1") {
+      bus_type.textContent = "accessible";
+    } else if (element.CarType === "0") {
+      bus_type.textContent = "directions_bus";
+    } else if (element.CarType === "3") {
+      bus_type.textContent = "pets";
     }
+    // 顯示車牌
     let plate_numb = document.createElement("div");
     plate_numb.style.fontSize = "30px";
     plate_numb.textContent = element.BusID;
-    bus_plate_div.appendChild(bus_type)
+    // 顯示七日數據
+    let plate_week_data = document.createElement("div")
+    plate_week_data.style.fontSize = "30px"
+    plate_week_data.style.border = "solid 2px black"
+    plate_week_data.style.margin = "5px 10px"
+    plate_week_data.textContent = value_to_string(plate_trip_last_week[element.BusID]["CompareResult"])
+    // 
+    let plate_week_data_title = document.createElement("span")
+    plate_week_data_title.textContent = "7"
+    plate_week_data_title.style.fontSize = "20px"
+    plate_week_data.append(plate_week_data_title)
+    
+    // 顯示三十日數據
+    let plate_month_data = document.createElement("div")
+    plate_month_data.style.fontSize = "30px"
+    plate_month_data.style.border = "solid 2px black"
+    plate_month_data.style.margin = "5px 10px"
+    plate_month_data.textContent = value_to_string(plate_trip_last_month[element.BusID]["CompareResult"])
+    // 
+    let plate_month_data_title = document.createElement("span")
+    plate_month_data_title.textContent = "30"
+    plate_month_data_title.style.fontSize = "20px"
+    plate_month_data.append(plate_month_data_title)
+
+    bus_plate_div.appendChild(bus_type);
     bus_plate_div.appendChild(plate_numb);
+    bus_plate_div.appendChild(plate_week_data);
+    bus_plate_div.appendChild(plate_month_data)
     update_bus_plates_div.appendChild(bus_plate_div);
   }
+}
+
+function data_to_hash(data, key) {
+  let output = {};
+  for (element of data) {
+    output[`${element[key]}`] = element;
+  }
+  return output;
 }
