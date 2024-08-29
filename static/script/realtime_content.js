@@ -179,7 +179,7 @@ function update_realtime_stops(data) {
         status = status.toString() + "分";
         update_estimate_div.style.color = "red";
         update_estimate_div.style.backgroundColor = "pink";
-      } else if (status > 3) {
+      } else if (status >= 3) {
         status = status.toString() + "分";
       } else {
         status = "即將進站";
