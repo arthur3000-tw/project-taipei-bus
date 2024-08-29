@@ -1,6 +1,6 @@
 from model.db import DB
 from model.get.operators import getOperators
-from model.get.routesByOperator import getRoutes
+from model.get.routesByOperator import getRoutesByOperator
 from model.get.calculated.routeTripLastWeekData import route_trip_last_week_data
 from model.get.calculated.routeTripLastMonthData import route_trip_last_month_data
 from datetime import datetime, timedelta
@@ -17,7 +17,7 @@ myDB.initialize()
 operators = getOperators(myDB).data
 
 # 計算最近七天數據
-end_day = datetime.fromisoformat("2024-08-04")
+end_day = datetime.fromisoformat("2024-08-27")
 start_day = end_day + timedelta(days=-7)
 
 # 清空 table
@@ -27,7 +27,7 @@ myDB.insert(sql)
 
 for operator in operators:
     # 取得路線名稱
-    result = getRoutes(myDB, operator["OperatorName"]).data
+    result = getRoutesByOperator(myDB, operator["OperatorName"]).data
     for route in result:
         # 取得路線數據
         route_trip_times = route_trip_last_week_data(
@@ -88,7 +88,7 @@ print("--- %s seconds ---" % (time.time() - start_time))
 start_time = time.time()
 
 # 計算最近三十天數據
-end_day = datetime.fromisoformat("2024-08-04")
+end_day = datetime.fromisoformat("2024-08-27")
 start_day = end_day + timedelta(days=-30)
 
 # 清空 table
@@ -98,7 +98,7 @@ myDB.insert(sql)
 
 for operator in operators:
     # 取得路線名稱
-    result = getRoutes(myDB, operator["OperatorName"]).data
+    result = getRoutesByOperator(myDB, operator["OperatorName"]).data
     for route in result:
         # 取得路線數據
         route_trip_times = route_trip_last_month_data(

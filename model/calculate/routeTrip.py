@@ -1,6 +1,6 @@
 from model.db import DB
 from model.get.operators import getOperators
-from model.get.routesByOperator import getRoutes
+from model.get.routesByOperator import getRoutesByOperator
 from datetime import datetime, timedelta
 import time
 
@@ -15,7 +15,7 @@ myDB.initialize()
 operators = getOperators(myDB).data
 
 # 計算最近七天數據
-end_day = datetime.fromisoformat("2024-08-04")
+end_day = datetime.fromisoformat("2024-08-27")
 start_day = end_day + timedelta(days=-7)
 
 # 清空 table
@@ -23,7 +23,7 @@ sql = "TRUNCATE TABLE routes_last_7_days_trip_data"
 myDB.insert(sql)
 
 for operator in operators:
-    result = getRoutes(myDB, operator["OperatorName"]).data
+    result = getRoutesByOperator(myDB, operator["OperatorName"]).data
     for route in result:
         # DB 指令，取得此路線的營運數據
         sql = "SELECT route_time_records.RouteName, route_time_records.SubRouteName, route_time_records.Direction, \
@@ -68,7 +68,7 @@ print("--- %s seconds ---" % (time.time() - start_time))
 start_time = time.time()
 
 # 計算最近三十天數據
-end_day = datetime.fromisoformat("2024-08-04")
+end_day = datetime.fromisoformat("2024-08-27")
 start_day = end_day + timedelta(days=-30)
 
 # 清空 table
@@ -76,7 +76,7 @@ sql = "TRUNCATE TABLE routes_last_30_days_trip_data"
 myDB.insert(sql)
 
 for operator in operators:
-    result = getRoutes(myDB, operator["OperatorName"]).data
+    result = getRoutesByOperator(myDB, operator["OperatorName"]).data
     for route in result:
         # DB 指令，取得此路線的營運數據
         sql = "SELECT route_time_records.RouteName, route_time_records.SubRouteName, route_time_records.Direction, \
