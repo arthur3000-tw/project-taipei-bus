@@ -232,11 +232,11 @@ function update_realtime_bus(data) {
     if (element.DutyStatus !== "1" || element.BusStatus !== "0") {
       continue;
     }
-    // 
+    //
     let update_bus_plates_div = document.querySelector(
       ".bus-plates-" + element.StopID
     );
-    // 
+    //
     let bus_plate_div = document.querySelector(".bus-plate-" + element.BusID);
     if (bus_plate_div === null) {
       bus_plate_div = document.createElement("div");
@@ -262,34 +262,53 @@ function update_realtime_bus(data) {
     let plate_numb = document.createElement("div");
     plate_numb.style.fontSize = "30px";
     plate_numb.textContent = element.BusID;
+
     // 顯示七日數據
-    let plate_week_data = document.createElement("div")
-    plate_week_data.style.fontSize = "30px"
-    plate_week_data.style.border = "solid 2px black"
-    plate_week_data.style.margin = "5px 10px"
-    plate_week_data.textContent = value_to_string(plate_trip_last_week[element.BusID]["CompareResult"])
-    // 
-    let plate_week_data_title = document.createElement("span")
-    plate_week_data_title.textContent = "7"
-    plate_week_data_title.style.fontSize = "20px"
-    plate_week_data.append(plate_week_data_title)
-    
+    let plate_week_data = document.createElement("div");
+    plate_week_data.style.fontSize = "30px";
+    plate_week_data.style.border = "solid 2px black";
+    plate_week_data.style.margin = "5px 10px";
+    try{
+    plate_week_data.textContent = value_to_string(
+      plate_trip_last_week[element.BusID]["CompareResult"]
+    );}
+    catch (e) {
+      console.log(e)
+      console.log(element)
+      plate_week_data.textContent = "無"
+    }
+    //
+    let plate_week_data_title = document.createElement("span");
+    plate_week_data_title.textContent = "7";
+    plate_week_data_title.style.fontSize = "20px";
+    plate_week_data.append(plate_week_data_title);
+
     // 顯示三十日數據
-    let plate_month_data = document.createElement("div")
-    plate_month_data.style.fontSize = "30px"
-    plate_month_data.style.border = "solid 2px black"
-    plate_month_data.style.margin = "5px 10px"
-    plate_month_data.textContent = value_to_string(plate_trip_last_month[element.BusID]["CompareResult"])
-    // 
-    let plate_month_data_title = document.createElement("span")
-    plate_month_data_title.textContent = "30"
-    plate_month_data_title.style.fontSize = "20px"
-    plate_month_data.append(plate_month_data_title)
+    let plate_month_data = document.createElement("div");
+    plate_month_data.style.fontSize = "30px";
+    plate_month_data.style.border = "solid 2px black";
+    plate_month_data.style.margin = "5px 10px";
+    try{
+    plate_month_data.textContent = value_to_string(
+      plate_trip_last_month[element.BusID]["CompareResult"]
+    );}
+    catch{
+      console.log(e)
+      console.log(element)
+      plate_month_data.textContent = "無"
+    }
+    //
+    let plate_month_data_title = document.createElement("span");
+    plate_month_data_title.textContent = "30";
+    plate_month_data_title.style.fontSize = "20px";
+    plate_month_data.append(plate_month_data_title);
 
     bus_plate_div.appendChild(bus_type);
     bus_plate_div.appendChild(plate_numb);
+
     bus_plate_div.appendChild(plate_week_data);
-    bus_plate_div.appendChild(plate_month_data)
+    bus_plate_div.appendChild(plate_month_data);
+
     update_bus_plates_div.appendChild(bus_plate_div);
   }
 }
