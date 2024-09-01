@@ -177,6 +177,7 @@ function update_realtime_stops(data) {
     update_estimate_div = document.querySelector(
       ".estimate-time-" + element.StopID
     );
+    // 公車不在路線上有的站牌
     if (update_estimate_div === null) {
       continue;
     }
@@ -236,6 +237,9 @@ function update_realtime_bus(data) {
     let update_bus_plates_div = document.querySelector(
       ".bus-plates-" + element.StopID
     );
+    if (update_bus_plates_div === null) {
+      continue;
+    }
     //
     let bus_plate_div = document.querySelector(".bus-plate-" + element.BusID);
     if (bus_plate_div === null) {
@@ -268,14 +272,14 @@ function update_realtime_bus(data) {
     plate_week_data.style.fontSize = "30px";
     plate_week_data.style.border = "solid 2px black";
     plate_week_data.style.margin = "5px 10px";
-    try{
-    plate_week_data.textContent = value_to_string(
-      plate_trip_last_week[element.BusID]["CompareResult"]
-    );}
-    catch (e) {
-      console.log(e)
-      console.log(element)
-      plate_week_data.textContent = "無"
+    try {
+      plate_week_data.textContent = value_to_string(
+        plate_trip_last_week[element.BusID]["CompareResult"]
+      );
+    } catch (e) {
+      console.log(e);
+      console.log(element);
+      plate_week_data.textContent = "無";
     }
     //
     let plate_week_data_title = document.createElement("span");
@@ -288,14 +292,14 @@ function update_realtime_bus(data) {
     plate_month_data.style.fontSize = "30px";
     plate_month_data.style.border = "solid 2px black";
     plate_month_data.style.margin = "5px 10px";
-    try{
-    plate_month_data.textContent = value_to_string(
-      plate_trip_last_month[element.BusID]["CompareResult"]
-    );}
-    catch{
-      console.log(e)
-      console.log(element)
-      plate_month_data.textContent = "無"
+    try {
+      plate_month_data.textContent = value_to_string(
+        plate_trip_last_month[element.BusID]["CompareResult"]
+      );
+    } catch {
+      console.log(e);
+      console.log(element);
+      plate_month_data.textContent = "無";
     }
     //
     let plate_month_data_title = document.createElement("span");
@@ -308,8 +312,12 @@ function update_realtime_bus(data) {
 
     bus_plate_div.appendChild(plate_week_data);
     bus_plate_div.appendChild(plate_month_data);
-
-    update_bus_plates_div.appendChild(bus_plate_div);
+    try {
+      update_bus_plates_div.appendChild(bus_plate_div);
+    } catch (e) {
+      console.log(element);
+      console.log(e);
+    }
   }
 }
 

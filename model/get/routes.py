@@ -3,7 +3,9 @@ from model.model.ResponseModel import MyResponse
 
 def getRoutes(myDB):
     # DB 指令
-    sql = "SELECT DISTINCT RouteName, RouteID, DepartureStopName, DestinationStopName FROM routes_info"
+    sql = "SELECT DISTINCT RouteName, RouteID, DepartureStopName, DestinationStopName \
+           FROM routes_info \
+           ORDER BY RouteName"
     # 執行查詢
     result = myDB.query(sql)
     # 無查詢到資料
