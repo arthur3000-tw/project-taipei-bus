@@ -20,3 +20,9 @@ async def analytics(request: Request):
 @router.get("/realtime", include_in_schema=False)
 async def realtime(request: Request):
     return FileResponse("./static/realtime.html", media_type="text/html")
+
+
+# realtime with route
+@router.get("/realtime/{routeName}", include_in_schema=False)
+async def realtime_route(request: Request, routeName: str):
+    return FileResponse("./static/realtime.html", media_type="text/html")

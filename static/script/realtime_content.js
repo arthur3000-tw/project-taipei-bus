@@ -13,9 +13,15 @@ async function initialize() {
   } else {
     console.log(data.message);
   }
+  // 確認網址
+  let path_name = window.location.pathname;
+  try {
+    route_name = path_name.split("/")[2];
+    render_realtime_info(route_name);
+  } catch (e) {}
 }
 
-async function render_realtime_info() {
+async function render_realtime_info(route_name) {
   // 清除連線
   if (wsClient != null) {
     wsClient.disconnect();
@@ -25,9 +31,10 @@ async function render_realtime_info() {
 
   // 取得站牌
   let responses = await Promise.all([
-    fetch("/Stops/" + this.id + "/去程"),
-    fetch("/Stops/" + this.id + "/返程"),
+    fetch("/Stops/" + route_name + "/去程"),
+    fetch("/Stops/" + route_name + "/返程"),
   ]);
+
   let data = await Promise.all(responses.map((response) => response.json()));
   // 建立資料變數
   let route_go;
@@ -35,7 +42,20 @@ async function render_realtime_info() {
   // 確認狀態
   for (eachData of data) {
     if (eachData.status === "error") {
+      // 依循網頁點入
+      let path_name = window.location.pathname;
+      if (path_name.split("/")[2] == undefined) {
+        return;
+      }
+      // 由網址進入
       console.log(eachData.message);
+
+      let img = document.createElement("img");
+      img.src = "../static/images/404.gif";
+      img.style.margin = "0 auto";
+      content.style.textAlign = "center";
+      content.appendChild(img);
+      return;
     } else {
       switch (eachData.message) {
         case "去程":
@@ -48,23 +68,29 @@ async function render_realtime_info() {
     }
   }
 
+  // 將路線顯示於 search bar
+  let route = decodeURI(route_name);
+  searchInput.value = route
+
   // 產生此路線的站牌
   console.log(route_go);
   console.log(route_back);
   let routes_div = document.createElement("div");
 
-  let pages_div = document.createElement("div")
-  render_pages(pages_div,["go","back"])
-  content.appendChild(pages_div)
+  let pages_div = document.createElement("div");
+  render_pages(pages_div, ["go", "back"]);
+  content.appendChild(pages_div);
+
   
-  render_realtime_stops(this.id, route_go, "去程", routes_div);
-  render_realtime_stops(this.id, route_back, "返程", routes_div);
+  render_realtime_stops(route, route_go, "去程", routes_div);
+  render_realtime_stops(route, route_back, "返程", routes_div);
+
   content.appendChild(routes_div);
 
   // 取得公車計算數據
   responses = await Promise.all([
-    fetch("/LastWeek/PlateTrip/" + this.id),
-    fetch("/LastMonth/PlateTrip/" + this.id),
+    fetch("/LastWeek/PlateTrip/" + route_name),
+    fetch("/LastMonth/PlateTrip/" + route_name),
   ]);
   data = await Promise.all(responses.map((response) => response.json()));
   // 確認狀態
@@ -89,27 +115,28 @@ async function render_realtime_info() {
 
   // 建立連線
   wsClient = new WebSocketClient(
-    "/ws/realtime/" + routes_data[this.id]["RouteID"]
+    "/ws/realtime/" + routes_data[route]["RouteID"]
   );
+
   wsClient.connect();
 }
 
 function render_realtime_stops(route, data, direction, routes_div) {
-  
-  if (direction == "去程"){
-    button = document.getElementById("pills-go-tab")
-  } else if (direction == "返程"){
-    button = document.getElementById("pills-back-tab")
+  if (direction == "去程") {
+    button = document.getElementById("pills-go-tab");
+  } else if (direction == "返程") {
+    button = document.getElementById("pills-back-tab");
   }
 
-  button.textContent = "往" +
-  (direction == "去程"
-    ? routes_data[route].DestinationStopName
-    : direction == "返程"
-    ? routes_data[route].DepartureStopName
-    : "");
-  
-  button.style.fontSize = "30px"
+  button.textContent =
+    "往" +
+    (direction == "去程"
+      ? routes_data[route].DestinationStopName
+      : direction == "返程"
+      ? routes_data[route].DepartureStopName
+      : "");
+
+  button.style.fontSize = "30px";
 
   let route_div = document.createElement("div");
   // title
@@ -190,12 +217,12 @@ function render_realtime_stops(route, data, direction, routes_div) {
   route_div.appendChild(title_div);
   route_div.appendChild(stops_div);
 
-  if(direction == "去程"){
-    let div = document.getElementById("pills-go")
-    div.appendChild(route_div)
-  } else if (direction == "返程"){
-    let div = document.getElementById("pills-back")
-    div.appendChild(route_div)
+  if (direction == "去程") {
+    let div = document.getElementById("pills-go");
+    div.appendChild(route_div);
+  } else if (direction == "返程") {
+    let div = document.getElementById("pills-back");
+    div.appendChild(route_div);
   }
   // routes_div.appendChild(route_div);
 }
@@ -357,64 +384,65 @@ function data_to_hash(data, key) {
   return output;
 }
 
-function render_pages(pages_div,pages){
+function render_pages(pages_div, pages) {
   //
-  let ul = document.createElement("ul")
-  ul.className = "nav nav-pills mb-3"
-  ul.id = "pills-tab"
-  ul.role = "tablist"
+  let ul = document.createElement("ul");
+  ul.className = "nav nav-pills mb-3";
+  ul.id = "pills-tab";
+  ul.role = "tablist";
   //
-  let count = 0
-  for (page of pages){
-  let li = create_li_button(page,count)
-  ul.appendChild(li)
-  count ++
+  let count = 0;
+  for (page of pages) {
+    let li = create_li_button(page, count);
+    ul.appendChild(li);
+    count++;
   }
   //
-  let div = document.createElement("div")
-  div.className = "tab-content"
-  div.id = "pills-tabContent"
+  let div = document.createElement("div");
+  div.className = "tab-content";
+  div.id = "pills-tabContent";
   //
   count = 0;
-  for (page of pages){
-    let page_div = create_page_div(page,count)
-    div.appendChild(page_div)
-    count ++
+  for (page of pages) {
+    let page_div = create_page_div(page, count);
+    div.appendChild(page_div);
+    count++;
   }
 
-  pages_div.appendChild(ul)
-  pages_div.appendChild(div)
+  pages_div.appendChild(ul);
+  pages_div.appendChild(div);
 }
 
-function create_li_button(name,count){
-  let li = document.createElement("li")
-  li.className = "nav-item"
-  li.role = "presentation"
-  let button = document.createElement("button")
-  if (count === 0){
-  button.className = "nav-link active"
+function create_li_button(name, count) {
+  let li = document.createElement("li");
+  li.className = "nav-item";
+  li.role = "presentation";
+  let button = document.createElement("button");
+  if (count === 0) {
+    button.className = "nav-link active";
   } else {
-    button.className = "nav-link"
+    button.className = "nav-link";
   }
-  button.id = `pills-${name}-tab`
-  button.setAttribute("data-bs-toggle","pill")
-  button.setAttribute("data-bs-target",`#pills-${name}`)
-  button.type = "button"
-  button.role = "tab"
-  button.setAttribute("aria-controls",`pills-${name}`)
-  button.setAttribute("aria-selected",true)
-  li.appendChild(button)
-  return li
+  button.id = `pills-${name}-tab`;
+  button.setAttribute("data-bs-toggle", "pill");
+  button.setAttribute("data-bs-target", `#pills-${name}`);
+  button.type = "button";
+  button.role = "tab";
+  button.setAttribute("aria-controls", `pills-${name}`);
+  button.setAttribute("aria-selected", true);
+  li.appendChild(button);
+  return li;
 }
 
-function create_page_div(name,count){
-  let div = document.createElement("div")
-  if(count===0){
-    div.className = "tab-pane fade show active"
+function create_page_div(name, count) {
+  let div = document.createElement("div");
+  if (count === 0) {
+    div.className = "tab-pane fade show active";
   } else {
-  div.className = "tab-pane fade"}
-  div.id = `pills-${name}`
-  div.role = "tabpanel"
-  div.setAttribute("aria-labelledby",`pills-${name}-tab`)
-  return div
+    div.className = "tab-pane fade";
+  }
+  div.id = `pills-${name}`;
+  div.role = "tabpanel";
+  div.setAttribute("aria-labelledby", `pills-${name}-tab`);
+  return div;
 }

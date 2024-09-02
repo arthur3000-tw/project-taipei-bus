@@ -67,7 +67,7 @@ function displayResults(suggestions) {
       " - " +
       routes_data[item].DestinationStopName;
     route_div.id = item
-    route_div.addEventListener("click", render_realtime_info);
+    route_div.addEventListener("click", direct_to_page);
 
     routes_div.appendChild(route_div);
   });
@@ -78,4 +78,8 @@ function push_search_bar_data(data, attribute) {
   for (element of data) {
     search_bar_data.push(element[attribute]);
   }
+}
+
+function direct_to_page(){
+  window.location.href = "/realtime/" + this.id
 }
