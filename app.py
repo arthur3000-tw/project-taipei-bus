@@ -26,8 +26,8 @@ estimateTimeCache = Data.DataCache()
 # SubRoute ID Cache 實體化
 subrouteIDCache = Data.DataCache()
 # DB 實體化
-myDB = DB.DB(host="localhost", database="taipei_bus")
-# myDB = DB.DB(host=os.environ.get("DB_HOST"), database="taipei_bus")
+# myDB = DB.DB(host="localhost", database="taipei_bus")
+myDB = DB.DB(host=os.environ.get("DB_HOST"), database="taipei_bus")
 myDB.initialize()
 # Websocket 實體化
 myWebSocket = ConnectionManager.ConnectionManager(
