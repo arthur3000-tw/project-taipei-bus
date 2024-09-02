@@ -52,6 +52,11 @@ async function render_realtime_info() {
   console.log(route_go);
   console.log(route_back);
   let routes_div = document.createElement("div");
+
+  let pages_div = document.createElement("div")
+  render_pages(pages_div,["go","back"])
+  content.appendChild(pages_div)
+  
   render_realtime_stops(this.id, route_go, "去程", routes_div);
   render_realtime_stops(this.id, route_back, "返程", routes_div);
   content.appendChild(routes_div);
@@ -90,6 +95,22 @@ async function render_realtime_info() {
 }
 
 function render_realtime_stops(route, data, direction, routes_div) {
+  
+  if (direction == "去程"){
+    button = document.getElementById("pills-go-tab")
+  } else if (direction == "返程"){
+    button = document.getElementById("pills-back-tab")
+  }
+
+  button.textContent = "往" +
+  (direction == "去程"
+    ? routes_data[route].DestinationStopName
+    : direction == "返程"
+    ? routes_data[route].DepartureStopName
+    : "");
+  
+  button.style.fontSize = "30px"
+
   let route_div = document.createElement("div");
   // title
   let title_div = document.createElement("div");
@@ -169,7 +190,14 @@ function render_realtime_stops(route, data, direction, routes_div) {
   route_div.appendChild(title_div);
   route_div.appendChild(stops_div);
 
-  routes_div.appendChild(route_div);
+  if(direction == "去程"){
+    let div = document.getElementById("pills-go")
+    div.appendChild(route_div)
+  } else if (direction == "返程"){
+    let div = document.getElementById("pills-back")
+    div.appendChild(route_div)
+  }
+  // routes_div.appendChild(route_div);
 }
 
 function update_realtime_stops(data) {
@@ -296,7 +324,7 @@ function update_realtime_bus(data) {
       plate_month_data.textContent = value_to_string(
         plate_trip_last_month[element.BusID]["CompareResult"]
       );
-    } catch {
+    } catch (e) {
       console.log(e);
       console.log(element);
       plate_month_data.textContent = "無";
@@ -327,4 +355,66 @@ function data_to_hash(data, key) {
     output[`${element[key]}`] = element;
   }
   return output;
+}
+
+function render_pages(pages_div,pages){
+  //
+  let ul = document.createElement("ul")
+  ul.className = "nav nav-pills mb-3"
+  ul.id = "pills-tab"
+  ul.role = "tablist"
+  //
+  let count = 0
+  for (page of pages){
+  let li = create_li_button(page,count)
+  ul.appendChild(li)
+  count ++
+  }
+  //
+  let div = document.createElement("div")
+  div.className = "tab-content"
+  div.id = "pills-tabContent"
+  //
+  count = 0;
+  for (page of pages){
+    let page_div = create_page_div(page,count)
+    div.appendChild(page_div)
+    count ++
+  }
+
+  pages_div.appendChild(ul)
+  pages_div.appendChild(div)
+}
+
+function create_li_button(name,count){
+  let li = document.createElement("li")
+  li.className = "nav-item"
+  li.role = "presentation"
+  let button = document.createElement("button")
+  if (count === 0){
+  button.className = "nav-link active"
+  } else {
+    button.className = "nav-link"
+  }
+  button.id = `pills-${name}-tab`
+  button.setAttribute("data-bs-toggle","pill")
+  button.setAttribute("data-bs-target",`#pills-${name}`)
+  button.type = "button"
+  button.role = "tab"
+  button.setAttribute("aria-controls",`pills-${name}`)
+  button.setAttribute("aria-selected",true)
+  li.appendChild(button)
+  return li
+}
+
+function create_page_div(name,count){
+  let div = document.createElement("div")
+  if(count===0){
+    div.className = "tab-pane fade show active"
+  } else {
+  div.className = "tab-pane fade"}
+  div.id = `pills-${name}`
+  div.role = "tabpanel"
+  div.setAttribute("aria-labelledby",`pills-${name}-tab`)
+  return div
 }
