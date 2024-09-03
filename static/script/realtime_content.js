@@ -22,6 +22,10 @@ async function initialize() {
 }
 
 async function render_realtime_info(route_name) {
+  // 網頁網址點入，無公車路線
+  if (route_name == undefined) {
+    return;
+  }
   // 清除連線
   if (wsClient != null) {
     wsClient.disconnect();
@@ -42,14 +46,9 @@ async function render_realtime_info(route_name) {
   // 確認狀態
   for (eachData of data) {
     if (eachData.status === "error") {
-      // 依循網頁點入
-      let path_name = window.location.pathname;
-      if (path_name.split("/")[2] == undefined) {
-        return;
-      }
       // 由網址進入
       console.log(eachData.message);
-
+      // 錯誤頁面
       let img = document.createElement("img");
       img.src = "../static/images/404.gif";
       img.style.margin = "0 auto";
@@ -70,7 +69,7 @@ async function render_realtime_info(route_name) {
 
   // 將路線顯示於 search bar
   let route = decodeURI(route_name);
-  searchInput.value = route
+  searchInput.value = route;
 
   // 產生此路線的站牌
   console.log(route_go);
@@ -81,7 +80,6 @@ async function render_realtime_info(route_name) {
   render_pages(pages_div, ["go", "back"]);
   content.appendChild(pages_div);
 
-  
   render_realtime_stops(route, route_go, "去程", routes_div);
   render_realtime_stops(route, route_back, "返程", routes_div);
 
