@@ -5,6 +5,7 @@ from model.get.routes import getRoutes
 from model.get.routesByOperator import getRoutesByOperator
 from model.get.operatorRoutesCount import getOperatorRoutesCount
 from model.get.stopsByRoute import getStopsByRoute
+from model.get.shapeByRoute import getShapeByRoute
 from model.model.ResponseModel import MyResponse
 
 router = APIRouter()
@@ -53,3 +54,12 @@ async def get_stops_by_route(request: Request, routeName: str, direction: str):
         return getStopsByRoute(myDB, routeName, direction)
     except Exception:
         return JSONResponse(status_code=400, content=MyResponse(status="error", message="無法取得站牌資訊").model_dump())
+
+
+@router.get("/Shape/{routeName}/{direction}")
+async def get_shape_by_route(request: Request, routeName: str, direction: str):
+    myDB = request.app.state.db
+    try:
+        return getShapeByRoute(myDB, routeName, direction)
+    except Exception:
+        return JSONResponse(status_code=400, content=MyResponse(status="error", message="無法取得路線資訊").model_dump())
