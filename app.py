@@ -10,6 +10,7 @@ from model.websocket import ConnectionManager
 from model.cache import Data
 from model.realtime.getEstimateTime import getEstimateTime
 from model.realtime.getBusEvent import getBusEvent
+from model.realtime.getBusData import getBusData
 from model.get.subrouteIDs import getSubroutesIDs
 from model.table.getSubrouteID import getSubrouteIDTable
 from controller import staticPage, getStaticInfo
@@ -23,6 +24,7 @@ from controller.realtime import getRealTimeData
 # RealTimeData Cache 實體化
 busEventCache = Data.DataCache()
 estimateTimeCache = Data.DataCache()
+busDataCache = Data.DataCache()
 # SubRoute ID Cache 實體化
 subrouteIDCache = Data.DataCache()
 # DB 實體化
@@ -31,7 +33,7 @@ myDB = DB.DB(host=os.environ.get("DB_HOST"), database="taipei_bus")
 myDB.initialize()
 # Websocket 實體化
 myWebSocket = ConnectionManager.ConnectionManager(
-    estimateTimeCache, busEventCache)
+    estimateTimeCache, busEventCache, busDataCache)
 # scheduler 實體化
 scheduler = AsyncIOScheduler(timezone=timezone("ROC"))
 
@@ -105,3 +107,4 @@ app.include_router(staticPage.router)
 async def start_scheduler():
     await getEstimateTime(myWebSocket, estimateTimeCache)
     await getBusEvent(subrouteIDCache, myWebSocket, busEventCache)
+    await getBusData(subrouteIDCache, myWebSocket, busDataCache)
