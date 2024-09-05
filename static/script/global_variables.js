@@ -11,11 +11,21 @@ let map;
 let bus_go = [];
 let bus_back = [];
 // 取得 bus icon 存於 local
-save_image_to_local_storage("../static/images/bus_go.png","bus_go")
-save_image_to_local_storage("../static/images/bus_back.png","bus_back")
+save_image_to_local_storage("../static/images/bus_go.png", "bus_go");
+save_image_to_local_storage("../static/images/bus_back.png", "bus_back");
 // 建立 map 中的 bus icon
-let bus_icon_go = L.icon({iconUrl: localStorage.getItem("bus_go"), iconSize:[50, 18.7]})
-let bus_icon_back = L.icon({iconUrl: localStorage.getItem("bus_back"), iconSize:[50, 18.7]})
+try {
+  let bus_icon_go = L.icon({
+    iconUrl: localStorage.getItem("bus_go"),
+    iconSize: [50, 18.7],
+  });
+  let bus_icon_back = L.icon({
+    iconUrl: localStorage.getItem("bus_back"),
+    iconSize: [50, 18.7],
+  });
+} catch (e) {
+  console.log(e);
+}
 
 // navbar
 const hamburger = document.querySelector(".hamburger");
@@ -54,7 +64,7 @@ function value_to_string(value) {
 let wsClient;
 
 // 從後端獲取圖片並儲存到 localStorage
-async function save_image_to_local_storage(image_url,image_name) {
+async function save_image_to_local_storage(image_url, image_name) {
   try {
     // 1. 從後端獲取圖片
     const response = await fetch(image_url);
@@ -62,15 +72,15 @@ async function save_image_to_local_storage(image_url,image_name) {
 
     // 2. 將圖片轉換為 Base64 字串
     const reader = new FileReader();
-    reader.onloadend = function() {
+    reader.onloadend = function () {
       const base64data = reader.result;
-      
+
       // 3. 將 Base64 字串儲存在 localStorage 中
       localStorage.setItem(image_name, base64data);
-      console.log('圖片已成功儲存到 localStorage');
-    }
+      console.log("圖片已成功儲存到 localStorage");
+    };
     reader.readAsDataURL(blob);
   } catch (error) {
-    console.error('儲存圖片時發生錯誤:', error);
+    console.error("儲存圖片時發生錯誤:", error);
   }
 }
