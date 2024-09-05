@@ -62,9 +62,11 @@ class WebSocketClient {
     console.log("Received message:", message);
     // 在這裡處理接收到的消息
     if (message.message === "Estimate Time"){
-      update_realtime_stops(message.data[0])
+      update_estimate_time(message.data[0])
     } else if(message.message === "Bus Event"){
-      update_realtime_bus(message.data[0])
+      update_bus_event(message.data[0])
+    } else if(message.message === "Bus Data"){
+      update_bus_data(message.data[0])
     }
   }
 }

@@ -269,7 +269,7 @@ function render_realtime_stops(route, data, direction, routes_div) {
   // routes_div.appendChild(route_div);
 }
 
-function update_realtime_stops(data) {
+function update_estimate_time(data) {
   for (element of data) {
     update_estimate_div = document.querySelector(
       ".estimate-time-" + element.StopID
@@ -323,7 +323,7 @@ function update_realtime_stops(data) {
   }
 }
 
-function update_realtime_bus(data) {
+function update_bus_event(data) {
   document.querySelectorAll(".bus-plate").forEach((e) => e.remove());
   for (element of data) {
     // 排除非營運狀態公車
@@ -559,22 +559,56 @@ function draw_map(shape_go, shape_back, map_div) {
     all_shape.push(point);
   }
 
-  let map = L.map("map")
+  map = L.map("map");
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
     attribution:
       '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(map);
 
-  let line_go = L.polyline(shape_go, { color: "red" , opacity: 0.5 }).arrowheads({yawn: 45,fill:true, frequency: "300m"}).addTo(map);
-  let line_back = L.polyline(shape_back, { color: "blue", opacity: 0.5 }).arrowheads({yawn: 45,fill:true, frequency: "300m"}).addTo(map);
-  let line_all = L.polyline(all_shape)
-  
+  let line_go = L.polyline(shape_go, { color: "red", opacity: 0.5 })
+    .arrowheads({ yawn: 45, fill: true, frequency: "100px", size: "12px" })
+    .addTo(map);
+  let line_back = L.polyline(shape_back, { color: "blue", opacity: 0.5 })
+    .arrowheads({ yawn: 45, fill: true, frequency: "100px", size: "12px" })
+    .addTo(map);
+  let line_all = L.polyline(all_shape);
 
   const resizeObserver = new ResizeObserver(() => {
     map.invalidateSize();
-    map.fitBounds(line_all.getBounds())
+    map.fitBounds(line_all.getBounds());
   });
 
   resizeObserver.observe(map_div);
+}
+
+function update_bus_data(data) {
+  // 清除 map 中的公車 icon
+  for (bus of bus_go) {
+    map.removeLayer(bus);
+  }
+  for (bus of bus_back) {
+    map.removeLayer(bus);
+  }
+  // 清除公車資訊
+  bus_go = [];
+  bus_back = [];
+  for (element of data) {
+    // 排除非營運狀態公車
+    if (element.DutyStatus !== "1" || element.BusStatus !== "0") {
+      continue;
+    }
+    //
+    if (element["GoBack"] == "0") {
+      marker = new L.marker([element["Latitude"], element["Longitude"]], {
+        icon: bus_icon_go,
+      }).addTo(map);
+      bus_go.push(marker);
+    } else if (element["GoBack"] == "1") {
+      marker = new L.marker([element["Latitude"], element["Longitude"]], {
+        icon: bus_icon_back,
+      }).addTo(map);
+      bus_back.push(marker);
+    }
+  }
 }
