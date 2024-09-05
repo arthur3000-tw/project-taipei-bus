@@ -38,8 +38,8 @@ async function render_realtime_info(route_name) {
     fetch("/Stops/" + route_name + "/去程"),
     fetch("/Stops/" + route_name + "/返程"),
   ]);
-
   let data = await Promise.all(responses.map((response) => response.json()));
+
   // 建立資料變數
   let route_go;
   let route_back;
@@ -74,16 +74,58 @@ async function render_realtime_info(route_name) {
   // 產生此路線的站牌
   console.log(route_go);
   console.log(route_back);
-  let routes_div = document.createElement("div");
+  // let routes_div = document.createElement("div");
 
+  // 產生選擇標籤
   let pages_div = document.createElement("div");
-  render_pages(pages_div, ["go", "back"]);
+  render_pages(pages_div, ["go", "back", "map"]);
   content.appendChild(pages_div);
 
-  render_realtime_stops(route, route_go, "去程", routes_div);
-  render_realtime_stops(route, route_back, "返程", routes_div);
+  // 產生去程、返程資料
+  // render_realtime_stops(route, route_go, "去程", routes_div);
+  // render_realtime_stops(route, route_back, "返程", routes_div);
+  render_realtime_stops(route, route_go, "去程");
+  render_realtime_stops(route, route_back, "返程");
 
-  content.appendChild(routes_div);
+  // 取得地圖資訊
+  responses = await Promise.all([
+    fetch("/Shape/" + route_name + "/去程"),
+    fetch("/Shape/" + route_name + "/返程"),
+  ]);
+  data = await Promise.all(responses.map((response) => response.json()));
+
+  // 建立資料變數
+  let shape_go;
+  let shape_back;
+
+  // 確認狀態
+  for (eachData of data) {
+    if (eachData.status === "error") {
+      // 由網址進入
+      console.log(eachData.message);
+      // 錯誤頁面
+      let img = document.createElement("img");
+      img.src = "../static/images/404.gif";
+      img.style.margin = "0 auto";
+      content.style.textAlign = "center";
+      content.appendChild(img);
+      return;
+    } else {
+      switch (eachData.message) {
+        case "去程":
+          shape_go = eachData.data;
+          break;
+        case "返程":
+          shape_back = eachData.data;
+          break;
+      }
+    }
+  }
+
+  // 產生地圖資料
+  render_realtime_map(route, shape_go, shape_back);
+
+  // content.appendChild(routes_div);
 
   // 取得公車計算數據
   responses = await Promise.all([
@@ -120,12 +162,13 @@ async function render_realtime_info(route_name) {
 }
 
 function render_realtime_stops(route, data, direction, routes_div) {
+  // 選取按鈕
   if (direction == "去程") {
     button = document.getElementById("pills-go-tab");
   } else if (direction == "返程") {
     button = document.getElementById("pills-back-tab");
   }
-
+  // 產生按鈕名稱
   button.textContent =
     "往" +
     (direction == "去程"
@@ -137,7 +180,7 @@ function render_realtime_stops(route, data, direction, routes_div) {
   button.style.fontSize = "30px";
 
   let route_div = document.createElement("div");
-  // title
+  // 產生路線title
   let title_div = document.createElement("div");
   title_div.style.textAlign = "center";
   title_div.style.fontSize = "36px";
@@ -215,6 +258,7 @@ function render_realtime_stops(route, data, direction, routes_div) {
   route_div.appendChild(title_div);
   route_div.appendChild(stops_div);
 
+  // 放入去程、回程分頁中
   if (direction == "去程") {
     let div = document.getElementById("pills-go");
     div.appendChild(route_div);
@@ -443,4 +487,94 @@ function create_page_div(name, count) {
   div.role = "tabpanel";
   div.setAttribute("aria-labelledby", `pills-${name}-tab`);
   return div;
+}
+
+function render_realtime_map(route, shape_go, shape_back) {
+  console.log(shape_go);
+  console.log(shape_back);
+
+  // 選取按鈕
+  button = document.getElementById("pills-map-tab");
+  // 產生按鈕名稱
+  button.textContent = "路線地圖";
+  button.style.fontSize = "30px";
+
+  let route_div = document.createElement("div");
+  // 產生路線title
+  let title_div = document.createElement("div");
+  title_div.style.textAlign = "center";
+  title_div.style.fontSize = "36px";
+  title_div.style.margin = "0px 20px";
+  title_div.style.border = "3px solid black";
+  title_div.textContent =
+    route +
+    "  " +
+    routes_data[route].DepartureStopName +
+    "-" +
+    routes_data[route].DestinationStopName;
+
+  // 將 linestring 轉為 array
+  shape_go = line_string_to_array(shape_go[0]["Shape"]);
+  shape_back = line_string_to_array(shape_back[0]["Shape"]);
+
+  // 產生 map div
+  map_div = document.createElement("div");
+  map_div.id = "map";
+
+  route_div.appendChild(title_div);
+  route_div.appendChild(map_div);
+
+  // 放入分頁中
+  let div = document.getElementById("pills-map");
+  div.appendChild(route_div);
+
+  // 畫出 map
+  draw_map(shape_go, shape_back, map_div);
+}
+
+function line_string_to_array(line_string) {
+  // 移除 LINSTRING()
+  line_string = line_string
+    .replace("LINESTRING", "")
+    .replace("(", "")
+    .replace(")", "")
+    .split(",");
+  //
+  result = [];
+  for (point of line_string) {
+    result.push([
+      parseFloat(point.split(" ")[0]),
+      parseFloat(point.split(" ")[1]),
+    ]);
+  }
+  return result;
+}
+
+function draw_map(shape_go, shape_back, map_div) {
+  let all_shape = [];
+  for (point of shape_go) {
+    all_shape.push(point);
+  }
+  for (point of shape_back) {
+    all_shape.push(point);
+  }
+
+  let map = L.map("map")
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution:
+      '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  }).addTo(map);
+
+  let line_go = L.polyline(shape_go, { color: "red" , opacity: 0.5 }).arrowheads({yawn: 45,fill:true, frequency: "300m"}).addTo(map);
+  let line_back = L.polyline(shape_back, { color: "blue", opacity: 0.5 }).arrowheads({yawn: 45,fill:true, frequency: "300m"}).addTo(map);
+  let line_all = L.polyline(all_shape)
+  
+
+  const resizeObserver = new ResizeObserver(() => {
+    map.invalidateSize();
+    map.fitBounds(line_all.getBounds())
+  });
+
+  resizeObserver.observe(map_div);
 }
