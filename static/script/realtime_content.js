@@ -593,21 +593,58 @@ function update_bus_data(data) {
   // 清除公車資訊
   bus_go = [];
   bus_back = [];
+  //
+  let popupOptions = { maxWidth: "500", className: "popup" };
   for (element of data) {
     // 排除非營運狀態公車
     if (element.DutyStatus !== "1" || element.BusStatus !== "0") {
       continue;
     }
+    // 取得數據
+    let last_week_data;
+    try {
+      last_week_data = value_to_string(
+        plate_trip_last_week[element.BusID]["CompareResult"]
+      );
+    } catch {
+      last_week_data = "無";
+    }
+    let last_month_data;
+    try {
+      last_month_data = value_to_string(
+        plate_trip_last_month[element.BusID]["CompareResult"]
+      );
+    } catch {
+      last_month_data = "無";
+    }
     //
     if (element["GoBack"] == "0") {
       marker = new L.marker([element["Latitude"], element["Longitude"]], {
         icon: bus_icon_go,
-      }).addTo(map);
+      })
+        .bindPopup(
+          `<b>${element["BusID"]}</b>
+          <br>
+          近七天-${last_week_data}
+          <br>
+          近三十天-${last_month_data}`,
+          popupOptions
+        )
+        .addTo(map);
       bus_go.push(marker);
     } else if (element["GoBack"] == "1") {
       marker = new L.marker([element["Latitude"], element["Longitude"]], {
         icon: bus_icon_back,
-      }).addTo(map);
+      })
+        .bindPopup(
+          `<b>${element["BusID"]}</b>
+        <br>
+        近七天-${last_week_data}
+        <br>
+        近三十天-${last_month_data}`,
+          popupOptions
+        )
+        .addTo(map);
       bus_back.push(marker);
     }
   }

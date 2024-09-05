@@ -81,6 +81,10 @@ a {
   height: 500px;
 }
 
+.popup {
+  font-size: 20px;
+}
+
 .content {
   position: relative;
 }
