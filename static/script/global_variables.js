@@ -11,15 +11,25 @@ let map;
 let bus_go = [];
 let bus_back = [];
 // 取得 bus icon 存於 local
-save_image_to_local_storage("../static/images/bus_go.png", "bus_go");
-save_image_to_local_storage("../static/images/bus_back.png", "bus_back");
+if (localStorage.getItem("bus_go") == null) {
+  save_image_to_local_storage("../static/images/bus_go.png", "bus_go");
+}
+if (localStorage.getItem("bus_back") == null) {
+  save_image_to_local_storage("../static/images/bus_back.png", "bus_back");
+}
 // 建立 map 中的 bus icon
+let bus_icon_go;
+let bus_icon_back;
 try {
-  let bus_icon_go = L.icon({
+  bus_icon_go = L.icon({
     iconUrl: localStorage.getItem("bus_go"),
     iconSize: [50, 18.7],
   });
-  let bus_icon_back = L.icon({
+} catch (e) {
+  console.log(e);
+}
+try {
+  bus_icon_back = L.icon({
     iconUrl: localStorage.getItem("bus_back"),
     iconSize: [50, 18.7],
   });
