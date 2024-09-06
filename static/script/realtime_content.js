@@ -5,11 +5,18 @@ async function initialize() {
   // 取得所有路線名稱
   response = await fetch("/Routes");
   data = await response.json();
+  // 正常取得資料
   if (data.status === "ok") {
+    // 存放資料
     for (element of data.data) {
+      // 處理路線
+      if (element.RouteName.includes("預")){
+        continue
+      }
       routes_data[element.RouteName] = element;
+      push_search_bar_data(element, "RouteName");
     }
-    push_search_bar_data(data.data, "RouteName");
+    
   } else {
     console.log(data.message);
   }
