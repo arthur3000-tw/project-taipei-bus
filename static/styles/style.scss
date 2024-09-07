@@ -9,6 +9,13 @@
 html {
   font-size: 62.5%;
   font-family: "Roboto", sans-serif;
+  height: 100%;
+}
+
+body{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 li {
@@ -80,7 +87,7 @@ a {
 }
 
 #map {
-  height: 500px;
+  height: 600px;
 }
 
 .popup{
@@ -89,6 +96,7 @@ a {
 
 .content {
   position: relative;
+  flex: 1;
 }
 
 .content-element {
@@ -107,8 +115,8 @@ hr {
 }
 
 footer {
-  min-height: 100px;
-  height: 100%;
+  min-height: 60px;
+  // height: 100%;
   background-color: #757575;
   display: flex;
   justify-content: center;
@@ -117,6 +125,7 @@ footer {
   div.text {
     color: white;
     font-weight: bold;
+    font-size: 16px;
   }
 }
 
