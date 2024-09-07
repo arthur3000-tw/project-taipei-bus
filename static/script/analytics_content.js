@@ -101,7 +101,7 @@ function render_route_plates(
   route_last_week,
   route_last_month,
   plate_last_week,
-  plate_last_month,
+  plate_last_month
   // title
 ) {
   // // 改變標題
@@ -167,13 +167,21 @@ function render_data_div(route_last_data, plate_last_data, title) {
     let subroute_title_div = document.createElement("div");
     subroute_title_div.style.whiteSpace = "pre-wrap";
     subroute_title_div.style.fontSize = "2.5rem";
-    let direction = route.Direction == "去程" ? "往" + route.DestinationStopName : route.Direction == "返程" ? "往" + route.DepartureStopName : ""
+    let direction =
+      route.Direction == "去程"
+        ? "往" + route.DestinationStopName
+        : route.Direction == "返程"
+        ? "往" + route.DepartureStopName
+        : "";
     subroute_title_div.textContent =
       route.OperatorName +
       " ---- " +
       route.SubRouteName +
       " ---- " +
-      direction + "(" + route.Direction + ")" +
+      direction +
+      "(" +
+      route.Direction +
+      ")" +
       " ---- " +
       "平均旅程：" +
       Math.floor(route.AVG_TripTime / 3600) +
@@ -199,16 +207,33 @@ function render_data_div(route_last_data, plate_last_data, title) {
         let plate_div = document.createElement("div");
         plate_div.style.whiteSpace = "pre-wrap";
         plate_div.style.fontSize = "2rem";
-        plate_div.style.border = "solid 2px black";
+        // plate_div.style.border = "solid 2px black";
         plate_div.style.padding = "10px 10px";
         plate_div.style.margin = "10px 10px";
-        plate_div.style.display = "flex"
-        plate_div.style.flexDirection = "column"
-        plate_div.style.alignItems = "center"
+        plate_div.style.display = "flex";
+        plate_div.style.width = "90vw";
+        // plate_div.style.flexDirection = "column"
+        plate_div.style.alignItems = "center";
 
         context = value_to_string(plate.CompareResult);
 
-        plate_div.textContent = plate.PlateNumb + " (" + context + ")";
+        plate_div.textContent =
+          plate.PlateNumb +
+          " (" +
+          context +
+          ")" +
+          " ， " +
+          "平均旅程：" +
+          Math.floor(plate.AVG_TripTime / 3600) +
+          " 小時 " +
+          Math.floor((plate.AVG_TripTime % 3600) / 60) +
+          " 分 " +
+          Math.floor((plate.AVG_TripTime % 3600) % 60) +
+          " 秒" +
+          " ， " +
+          "數據：" +
+          plate.DataCount +
+          "筆。";
 
         let progress_bar_div = createProgressBar(plate.CompareResult);
 
@@ -321,8 +346,8 @@ function createProgressBar(value) {
   // container.style.backgroundColor = "#f0f0f0";
   container.style.position = "relative";
   container.style.overflow = "hidden";
-  container.style.margin = "10px 10px"
-  container.style.border = "solid 1px black"
+  container.style.margin = "10px 10px";
+  container.style.border = "solid 1px black";
 
   // 創建進度條
   const bar = document.createElement("div");
