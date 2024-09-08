@@ -18,6 +18,7 @@
     ></script>
     <script src="./static/script/global_variables.js" defer></script>
     <script src="./static/script/navbar.js" defer></script>
+    <script src="./static/script/index.js" defer></script>
   </head>
   <body>
     <header class="header">
@@ -43,18 +44,18 @@
       </nav>
     </header>
     <div class="content">
-      <div id="map"></div>
+      <!-- <div id="map" style="height: 900px"></div> -->
     </div>
     <footer class="footer">
       <div class="text">COPYRIGHT © 2024 台北公車資料酷</div>
     </footer>
   </body>
   <script>
-    map = L.map("map").setView([25.060327, 121.538815], 13);
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution:
-        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    }).addTo(map);
+    // map = L.map("map").setView([25.060327, 121.538815], 13);
+    // L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    //   maxZoom: 19,
+    //   attribution:
+    //     '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    // }).addTo(map);
   </script>
 </html>
