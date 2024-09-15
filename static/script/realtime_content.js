@@ -618,7 +618,7 @@ function draw_map(shape_go, shape_back, map_div) {
   resizeObserver.observe(map_div);
 }
 
-function update_bus_data(data) {
+function update_map(data) {
   // 清除 map 中的公車 icon
   for (bus of bus_go) {
     map.removeLayer(bus);
@@ -697,5 +697,5 @@ function render_bus_data(
   // 產生按鈕名稱
   button.textContent = "數據資料";
   button.style.fontSize = "30px";
-  
+
 }

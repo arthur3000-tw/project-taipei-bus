@@ -66,7 +66,7 @@ class WebSocketClient {
     } else if(message.message === "Bus Event"){
       update_bus_event(message.data[0])
     } else if(message.message === "Bus Data"){
-      update_bus_data(message.data[0])
+      update_map(message.data[0])
     }
   }
 }
