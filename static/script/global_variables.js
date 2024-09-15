@@ -10,6 +10,25 @@ let plate_trip_last_week;
 let map;
 let bus_go = [];
 let bus_back = [];
+
+function line_string_to_array(line_string) {
+  // 移除 LINSTRING()
+  line_string = line_string
+    .replace("LINESTRING", "")
+    .replace("(", "")
+    .replace(")", "")
+    .split(",");
+  //
+  result = [];
+  for (point of line_string) {
+    result.push([
+      parseFloat(point.split(" ")[0]),
+      parseFloat(point.split(" ")[1]),
+    ]);
+  }
+  return result;
+}
+
 // 取得 bus icon 存於 local
 if (localStorage.getItem("bus_go") == null) {
   save_image_to_local_storage("../static/images/bus_go.png", "bus_go");
@@ -93,4 +112,13 @@ async function save_image_to_local_storage(image_url, image_name) {
   } catch (error) {
     console.error("儲存圖片時發生錯誤:", error);
   }
+}
+
+// data type transform
+function data_to_hash(data, key) {
+  let output = {};
+  for (element of data) {
+    output[`${element[key]}`] = element;
+  }
+  return output;
 }
