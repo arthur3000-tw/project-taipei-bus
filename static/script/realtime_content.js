@@ -10,13 +10,12 @@ async function initialize() {
     // 存放資料
     for (element of data.data) {
       // 處理路線
-      if (element.RouteName.includes("預")){
-        continue
+      if (element.RouteName.includes("預")) {
+        continue;
       }
       routes_data[element.RouteName] = element;
       push_search_bar_data(element, "RouteName");
     }
-    
   } else {
     console.log(data.message);
   }
@@ -83,9 +82,9 @@ async function render_realtime_info(route_name) {
   console.log(route_back);
   // let routes_div = document.createElement("div");
 
-  // 產生選擇標籤
+  // 產生選擇標籤、分頁
   let pages_div = document.createElement("div");
-  render_pages(pages_div, ["go", "back", "map"]);
+  render_pages(pages_div, ["go", "back", "map", "data"]);
   content.appendChild(pages_div);
 
   // 產生去程、返程資料
@@ -159,6 +158,36 @@ async function render_realtime_info(route_name) {
   // 將數據格式轉換
   plate_trip_last_week = data_to_hash(plate_trip_last_week, "PlateNumb");
   plate_trip_last_month = data_to_hash(plate_trip_last_month, "PlateNumb");
+
+  // 取得公車路線計算數據
+  responses = await Promise.all([
+    fetch("/LastWeek/RouteTrip/" + route_name),
+    fetch("/LastMonth/RouteTrip/" + route_name),
+  ]);
+  data = await Promise.all(responses.map((response) => response.json()));
+  // 確認狀態
+  for (eachData of data) {
+    if (eachData.status === "error") {
+      console.log(eachData.message);
+    } else {
+      switch (eachData.message) {
+        case "Route Last Week":
+          route_trip_last_week = eachData.data;
+          break;
+        case "Route Last Month":
+          route_trip_last_month = eachData.data;
+          break;
+      }
+    }
+  }
+
+  // 產生數據頁面
+  render_bus_data(
+    route_trip_last_week,
+    route_trip_last_month,
+    plate_trip_last_week,
+    plate_trip_last_month
+  );
 
   // 建立連線
   wsClient = new WebSocketClient(
@@ -655,4 +684,18 @@ function update_bus_data(data) {
       bus_back.push(marker);
     }
   }
+}
+
+function render_bus_data(
+  route_trip_last_week,
+  route_trip_last_month,
+  plate_trip_last_week,
+  plate_trip_last_month
+) {
+  // 選取按鈕
+  button = document.getElementById("pills-data-tab");
+  // 產生按鈕名稱
+  button.textContent = "數據資料";
+  button.style.fontSize = "30px";
+  
 }
