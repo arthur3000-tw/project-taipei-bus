@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>台北公車資料酷 - 即時資訊</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+    />
+    <link rel="stylesheet" href="../static/styles/style.css" />
+    <script src="../static/script/global_variables.js" defer></script>
+    <script src="../static/script/websocket.js" defer></script>
+    <script src="../static/script/navbar.js" defer></script>
+    <script src="../static/script/update_realtime_data.js" defer></script>
+    <script src="../static/script/realtime_content.js" defer></script>
+    <script src="../static/script/search_bar.js" defer></script>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar">
+        <a href="/" class="nav-logo">台北公車資料酷</a>
+        <a href="/realtime" class="nav-title">即時資訊</a>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="/analytics" class="nav-link">數據分析</a>
+          </li>
+          <li class="nav-item">
+            <a href="/realtime" class="nav-link">即時資訊</a>
+          </li>
+          <!-- <li class="nav-item">
+            <a href="/navigation" class="nav-link">旅程規劃</a>
+          </li> -->
+        </ul>
+        <div class="hamburger">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+      </nav>
+    </header>
+    <div class="search-container">
+      <input type="text" id="search-input" placeholder="請輸入公車路線" />
+      <!-- <div id="results"></div> -->
+    </div>
+    <div class="content"></div>
+    <footer class="footer">
+      <div class="text">COPYRIGHT © 2024 台北公車資料酷</div>
+    </footer>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="../static/script/leaflet.geometryutil.js"></script>
+    <script src="../static/script/leaflet-arrowheads.js"></script>
+  </body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>台北公車資料酷</title>
+    <link rel="stylesheet" href="./static/styles/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script src="./static/script/global_variables.js" defer></script>
+    <script src="./static/script/navbar.js" defer></script>
+    <script src="./static/script/index.js" defer></script>
+  </head>
+  <body>
+    <header class="header">
+      <nav class="navbar">
+        <a href="/" class="nav-logo">台北公車資料酷</a>
+        <div class="nav-title">首頁</div>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="/analytics" class="nav-link">數據分析</a>
+          </li>
+          <li class="nav-item">
+            <a href="/realtime" class="nav-link">即時資訊</a>
+          </li>
+          <!-- <li class="nav-item">
+            <a href="/navigation" class="nav-link">旅程規劃</a>
+          </li> -->
+        </ul>
+        <div class="hamburger">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+      </nav>
+    </header>
+    <div class="content">
+      <!-- <div id="map" style="height: 900px"></div> -->
+    </div>
+    <footer class="footer">
+      <div class="text">COPYRIGHT © 2024 台北公車資料酷</div>
+    </footer>
+  </body>
+  <script>
+    // map = L.map("map").setView([25.060327, 121.538815], 13);
+    // L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    //   maxZoom: 19,
+    //   attribution:
+    //     '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    // }).addTo(map);
+  </script>
+</html>
