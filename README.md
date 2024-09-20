@@ -6,7 +6,6 @@
 
 - [Introduction](#introduction)
 - [Technology Stack](#technology-stack)
-- [Database Schema](#database-schema)
 - [System Architecture](#system-architecture)
 
 ## Introduction
@@ -30,10 +29,6 @@ This is an real-time Taipei bus information website
 | Python Dask     | Data cleanning, sorting, calculation |
 | WebSocket       | Broadcast real-time infromation      |
 
-
-## Database Schema
-
-
-
 ## System Architecture
 
+<img width="865" alt="image" src="https://github.com/user-attachments/assets/26586352-66a2-48a3-a8a9-31d1d7e28e32">
