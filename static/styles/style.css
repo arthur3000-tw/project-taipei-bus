@@ -157,6 +157,41 @@ footer div.text {
   background-color: lightcoral;
 }
 
+.result-route {
+  margin: 10px;
+  padding: 5px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.result-route:hover {
+  background-color: lightblue;
+}
+
+.result-route:active {
+  background-color: lightcoral;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: white;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 @media only screen and (max-width: 768px) {
   .nav-menu {
     position: fixed;

@@ -15,7 +15,7 @@ myDB.initialize()
 operators = getOperators(myDB).data
 
 # 計算最近七天數據
-end_day = datetime.fromisoformat("2024-08-27")
+end_day = datetime.fromisoformat("2024-10-23")
 start_day = end_day + timedelta(days=-7)
 
 # 清空 table
@@ -68,7 +68,7 @@ print("--- %s seconds ---" % (time.time() - start_time))
 start_time = time.time()
 
 # 計算最近三十天數據
-end_day = datetime.fromisoformat("2024-08-27")
+end_day = datetime.fromisoformat("2024-10-23")
 start_day = end_day + timedelta(days=-30)
 
 # 清空 table
