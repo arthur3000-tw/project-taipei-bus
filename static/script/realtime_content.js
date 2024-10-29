@@ -400,8 +400,91 @@ function render_realtime_map(route, shape_go, shape_back) {
   map_div = document.createElement("div");
   map_div.id = "map";
 
+  // 產生圖例 div
+  legend_div = document.createElement("div");
+  legend_div.height = "100px"
+  // legend_div.style.border = "2px solid black"
+  legend_div.style.display = "flex"
+  legend_div.style.justifyContent = "center"
+
+  // 產生去程圖例
+  legend_go_div = document.createElement("div")
+  legend_go_div.style.display = "flex"
+  legend_go_div.style.alignItems = "center"
+  legend_go_div.style.justifyContent = "center"
+
+  legend_go_text_div = document.createElement("div");
+  legend_go_text_div.textContent = "去程"
+  legend_go_text_div.style.fontSize = "25px"
+  legend_go_text_div.style.margin = "0 10px"
+
+  legend_go_canvas = document.createElement("canvas")
+  legend_go_canvas.width = "100"
+  legend_go_canvas.height = "50"
+  ctx_go = legend_go_canvas.getContext("2d")
+  ctx_go.beginPath();
+  ctx_go.moveTo(0, 25);
+  ctx_go.lineTo(200, 25);
+  ctx_go.lineWidth = 10;
+  ctx_go.strokeStyle = "red";
+  ctx_go.stroke();
+
+  legend_go_icon_div = document.createElement("div");
+  icon_img = document.createElement("img");
+  go_icon = localStorage.getItem("bus_go")
+  icon_img.src = go_icon
+  icon_img.width = "100"
+  
+  legend_go_icon_div.style.margin = "0 10px"
+  legend_go_icon_div.appendChild(icon_img)
+  
+  legend_go_div.appendChild(legend_go_icon_div)
+  legend_go_div.appendChild(legend_go_canvas)
+  legend_go_div.appendChild(legend_go_text_div)
+  
+  legend_div.appendChild(legend_go_div)
+
+  // 產生返程圖例
+  legend_back_div = document.createElement("div")
+  legend_back_div.style.display = "flex"
+  legend_back_div.style.alignItems = "center"
+  legend_back_div.style.justifyContent = "center"
+
+  legend_back_text_div = document.createElement("div");
+  legend_back_text_div.textContent = "返程"
+  legend_back_text_div.style.fontSize = "25px"
+  legend_back_text_div.style.margin = "0 10px"
+
+  legend_back_canvas = document.createElement("canvas")
+  legend_back_canvas.width = "100"
+  legend_back_canvas.height = "50"
+  ctx_back = legend_back_canvas.getContext("2d")
+  ctx_back.beginPath();
+  ctx_back.moveTo(0, 25);
+  ctx_back.lineTo(200, 25);
+  ctx_back.lineWidth = 10;
+  ctx_back.strokeStyle = "blue";
+  ctx_back.stroke();
+
+  legend_back_icon_div = document.createElement("div");
+  icon_img = document.createElement("img");
+  go_icon = localStorage.getItem("bus_back")
+  icon_img.src = go_icon
+  icon_img.width = "100"
+  
+  legend_back_icon_div.style.margin = "0 10px"
+  legend_back_icon_div.appendChild(icon_img)
+  
+  legend_back_div.appendChild(legend_back_icon_div)
+  legend_back_div.appendChild(legend_back_canvas)
+  legend_back_div.appendChild(legend_back_text_div)
+  
+  legend_div.appendChild(legend_go_div)
+  legend_div.appendChild(legend_back_div)
+
   route_div.appendChild(title_div);
   route_div.appendChild(map_div);
+  route_div.appendChild(legend_div)
 
   // 放入分頁中
   let div = document.getElementById("pills-map");

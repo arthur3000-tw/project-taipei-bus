@@ -127,6 +127,7 @@ function displayResults(suggestions) {
   routes_div.style.overflowX = "hidden"
   routes_div.style.backgroundColor = "white"
   routes_div.style.transform = "translateX(-30px)"
+  routes_div.style.border = "2px solid black"
 
   if (suggestions.length === 0) {
     return;
